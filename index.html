@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Robin Aldasoro — Développeur Full-Stack basé à Bordeaux, spécialisé dans les applications haute performance et les pratiques numériques durables." />
+
+  <title>Robin Aldasoro — Développeur Web Full-Stack</title>
+
+  <!-- Performance: un seul appel Google Fonts (évite le double chargement de Material Symbols) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600&family=Space+Grotesk:wght@500;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CDN (remplacer par un build Tailwind en production) -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'on-surface':                '#071e27',
+            'on-primary-container':      '#fdfcff',
+            'secondary-fixed-dim':       '#a7c8ff',
+            'surface-bright':            '#f3faff',
+            'error':                     '#ba1a1a',
+            'error-container':           '#ffdad6',
+            'on-error':                  '#ffffff',
+            'on-error-container':        '#93000a',
+            'primary-container':         '#167aba',
+            'primary':                   '#006097',
+            'primary-fixed':             '#cee5ff',
+            'primary-fixed-dim':         '#96ccff',
+            'on-primary':                '#ffffff',
+            'on-primary-fixed':          '#001d32',
+            'on-primary-fixed-variant':  '#004a76',
+            'secondary':                 '#325f9b',
+            'secondary-container':       '#93bdff',
+            'secondary-fixed':           '#d5e3ff',
+            'on-secondary':              '#ffffff',
+            'on-secondary-fixed':        '#001c3b',
+            'on-secondary-container':    '#194b86',
+            'tertiary':                  '#006671',
+            'tertiary-container':        '#00818f',
+            'tertiary-fixed':            '#98f0ff',
+            'on-tertiary':               '#ffffff',
+            'on-tertiary-fixed':         '#001f24',
+            'surface':                   '#f3faff',
+            'surface-dim':               '#c7dde9',
+            'surface-variant':           '#cfe6f2',
+            'surface-container-lowest':  '#ffffff',
+            'surface-container-low':     '#e6f6ff',
+            'surface-container':         '#dbf1fe',
+            'surface-container-high':    '#d5ecf8',
+            'surface-container-highest': '#cfe6f2',
+            'outline':                   '#707881',
+            'outline-variant':           '#c0c7d1',
+            'inverse-surface':           '#1e333c',
+            'inverse-primary':           '#96ccff',
+            'on-surface-variant':        '#404750',
+            'background':                '#f3faff',
+            'on-background':             '#071e27',
+          },
+          fontFamily: {
+            headline: ['Space Grotesk', 'sans-serif'],
+            body:     ['Inter', 'sans-serif'],
+            label:    ['Manrope', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Icônes Material Symbols */
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+      font-size: 1.25rem;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    /* Liquid glass */
+    .liquid-glass {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* Lien d'évitement — RGAA critère 12.7 */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 0;
+      padding: 0.5rem 1.25rem;
+      background: #006097;
+      color: #fff;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      z-index: 9999;
+      transition: top 0.15s ease;
+      border-radius: 0 0 0.5rem 0;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Focus visible global — RGAA critère 10.7 */
+    :focus-visible {
+      outline: 3px solid #006097;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* Champ en erreur */
+    .field-error {
+      outline: 2px solid #ba1a1a !important;
+      outline-offset: 1px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Lien d'évitement (RGAA 12.7) -->
+  <a href="#contenu-principal" class="skip-link">Aller au contenu principal</a>
+
+  <!-- ═══════════════════════════════════════════════════════════ EN-TÊTE / NAV -->
+  <header>
+    <nav
+      class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl shadow-sm"
+      aria-label="Navigation principale"
+    >
+      <div class="flex justify-between items-center px-6 md:px-8 py-4 max-w-7xl mx-auto">
+
+        <!-- Logo / nom -->
+        <a
+          href="#hero"
+          class="text-xl font-headline font-bold tracking-tighter text-on-surface"
+          aria-label="Robin Aldasoro — retour à l'accueil"
+        >
+          Robin Aldasoro
+        </a>
+
+        <!-- Navigation desktop -->
+        <ul
+          class="hidden md:flex space-x-8 items-center font-headline text-sm tracking-tight font-medium list-none m-0 p-0"
+          role="list"
+        >
+          <li><a id="nav-hero"       href="#hero"       class="text-primary font-bold border-b-2 border-primary" aria-current="page">Accueil</a></li>
+          <li><a id="nav-skills"     href="#skills"     class="text-on-surface-variant hover:text-primary transition-colors">Compétences</a></li>
+          <li><a id="nav-experience" href="#experience" class="text-on-surface-variant hover:text-primary transition-colors">Expérience</a></li>
+          <li><a id="nav-contact"    href="#contact"    class="text-on-surface-variant hover:text-primary transition-colors">Contact</a></li>
+        </ul>
+
+        <!-- CTA desktop -->
+        <a
+          href="#contact"
+          class="hidden md:inline-flex items-center bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2.5 rounded-full font-headline font-medium shadow-lg hover:scale-105 transition-transform duration-200"
+        >
+          Me contacter
+        </a>
+
+        <!-- Bouton menu mobile -->
+        <button
+          id="menu-btn"
+          type="button"
+          class="md:hidden text-on-surface p-2 rounded-lg"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Ouvrir le menu de navigation"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+        </button>
+      </div>
+
+      <!-- Menu mobile -->
+      <div
+        id="mobile-menu"
+        class="md:hidden hidden bg-white/95 backdrop-blur-xl border-t border-outline-variant/20"
+        role="region"
+        aria-label="Menu mobile"
+      >
+        <ul class="flex flex-col px-8 py-6 space-y-4 font-headline list-none m-0 p-0 px-8 py-6" role="list">
+          <li><a href="#hero"       class="block py-2 text-primary font-bold"                                    aria-current="page">Accueil</a></li>
+          <li><a href="#skills"     class="block py-2 text-on-surface-variant hover:text-primary transition-colors">Compétences</a></li>
+          <li><a href="#experience" class="block py-2 text-on-surface-variant hover:text-primary transition-colors">Expérience</a></li>
+          <li><a href="#contact"    class="block py-2 text-on-surface-variant hover:text-primary transition-colors">Contact</a></li>
+          <li>
+            <a
+              href="#contact"
+              class="inline-block bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-3 rounded-full font-medium mt-2"
+            >
+              Me contacter
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════ CONTENU PRINCIPAL -->
+  <main id="contenu-principal" tabindex="-1">
+
+    <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+    <section
+      id="hero"
+      class="pt-32 pb-20 px-6 md:px-8 max-w-7xl mx-auto min-h-screen flex flex-col md:flex-row items-center gap-16"
+      aria-labelledby="hero-title"
+    >
+      <div class="w-full md:w-1/2 space-y-8">
+        <div class="space-y-4">
+          <p class="font-label text-primary font-semibold uppercase tracking-widest text-xs">
+            Développeur Full-Stack / Tech Lead
+          </p>
+          <h1
+            id="hero-title"
+            class="text-4xl md:text-6xl font-headline font-bold text-on-surface tracking-tight leading-[1.1]"
+          >
+            L'exigence technique <span class="text-primary">au service</span> de vos projets.
+          </h1>
+        </div>
+        <p class="text-xl text-on-surface-variant leading-relaxed max-w-xl">
+          Je suis Robin Aldasoro, développeur dédié à la création d'applications haute performance, avec un focus sur l'excellence technique, la maintenabilité et les pratiques numériques durables. J'apprécie particulièrement le travail en équipe et le contact humain au quotidien.
+        </p>
+        <div class="flex flex-wrap gap-4 pt-4">
+          <a
+            href="#experience"
+            class="bg-primary text-on-primary px-8 py-4 rounded-full font-headline font-bold inline-flex items-center gap-2 hover:shadow-xl transition-all"
+          >
+            Voir mon travail
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_downward</span>
+          </a>
+          <a
+            href="#skills"
+            class="bg-surface-container-high text-primary px-8 py-4 rounded-full font-headline font-bold hover:bg-surface-container-highest transition-colors"
+          >
+            Stack technique
+          </a>
+        </div>
+      </div>
+
+      <div class="w-full md:w-1/2 relative">
+        <!-- Lueur décorative (aria-hidden car purement décorative) -->
+        <div
+          class="absolute -inset-4 bg-primary-fixed opacity-20 blur-3xl rounded-full"
+          aria-hidden="true"
+        ></div>
+
+        <div class="relative rounded-3xl overflow-hidden aspect-[4/5] shadow-2xl">
+          <img
+            src="assets/robin-aldasoro.jpg"
+            alt="Portrait de Robin Aldasoro, développeur web"
+            class="w-full h-full object-cover"
+            loading="eager"
+            width="800"
+            height="1120"
+            decoding="async"
+          />
+        </div>
+
+        <!-- Badge expérience (décoratif) -->
+        <div
+          class="absolute -bottom-6 -right-6 liquid-glass p-6 rounded-2xl shadow-xl max-w-[200px]"
+          aria-hidden="true"
+        >
+          <div class="flex items-center gap-4">
+            <div class="h-12 w-12 bg-primary-container rounded-full flex items-center justify-center text-on-primary">
+              <span class="material-symbols-outlined">code</span>
+            </div>
+            <div>
+              <p class="font-headline font-bold text-lg leading-none">15+</p>
+              <p class="font-label text-xs text-on-surface-variant">Ans d'expérience</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COMPÉTENCES ───────────────────────────────────────────────────────── -->
+    <section
+      id="skills"
+      class="py-24 bg-surface-container-low"
+      aria-labelledby="skills-title"
+    >
+      <div class="max-w-7xl mx-auto px-6 md:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <div class="max-w-2xl">
+            <h2 id="skills-title" class="text-4xl font-headline font-bold text-on-surface mb-4">
+              Compétences techniques
+            </h2>
+            <p class="text-on-surface-variant text-lg">
+              La bonne technologie est souvent la plus simple. J'adapte la stack au besoin, sans over-engineering.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          <!-- Backend -->
+          <article class="liquid-glass p-8 rounded-[2rem] hover:bg-surface-container-highest transition-all duration-300 group">
+            <div
+              class="h-14 w-14 bg-primary rounded-2xl flex items-center justify-center text-on-primary mb-8 group-hover:scale-110 transition-transform"
+              aria-hidden="true"
+            >
+              <span class="material-symbols-outlined text-3xl">terminal</span>
+            </div>
+            <h3 class="text-2xl font-headline font-bold mb-4">Maîtrise Backend</h3>
+            <p class="text-on-surface-variant mb-6">
+              Expertise dans la création de logique serveur robuste et la gestion d'architectures de bases de données complexes.
+            </p>
+            <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies backend">
+              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">PHP / Symfony</span></li>
+              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">Node.js</span></li>
+              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">MySQL</span></li>
+              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">PostgreSQL</span></li>
+              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">MongoDB</span></li>
+              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">Redis</span></li>
+            </ul>
+          </article>
+
+          <!-- Frontend -->
+          <article class="liquid-glass p-8 rounded-[2rem] hover:bg-surface-container-highest transition-all duration-300 group">
+            <div
+              class="h-14 w-14 bg-tertiary-container rounded-2xl flex items-center justify-center text-on-tertiary mb-8 group-hover:scale-110 transition-transform"
+              aria-hidden="true"
+            >
+              <span class="material-symbols-outlined text-3xl">web</span>
+            </div>
+            <h3 class="text-2xl font-headline font-bold mb-4">Excellence Frontend</h3>
+            <p class="text-on-surface-variant mb-6">
+              Je m'appuie sur les capacités natives des navigateurs avant tout recours à une bibliothèque — moins de code, plus de durabilité.
+            </p>
+            <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies frontend">
+              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">HTML5 / CSS3</span></li>
+              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Vanilla JS</span></li>
+              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Angular</span></li>
+              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Tailwind</span></li>
+              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Turbo</span></li>
+              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Stimulus</span></li>
+            </ul>
+          </article>
+
+          <!-- Systèmes -->
+          <article class="liquid-glass p-8 rounded-[2rem] hover:bg-surface-container-highest transition-all duration-300 group">
+            <div
+              class="h-14 w-14 bg-secondary-container rounded-2xl flex items-center justify-center text-on-secondary-container mb-8 group-hover:scale-110 transition-transform"
+              aria-hidden="true"
+            >
+              <span class="material-symbols-outlined text-3xl">architecture</span>
+            </div>
+            <h3 class="text-2xl font-headline font-bold mb-4">Architecture Systèmes</h3>
+            <p class="text-on-surface-variant mb-6">
+              Des architectures résilientes, dimensionnées au besoin réel — ni plus, ni moins. KISS et YAGNI comme boussole.
+            </p>
+            <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies systèmes">
+              <li><span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-label">REST</span></li>
+              <li><span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-label">Docker</span></li>
+              <li><span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-label">GitLab CI</span></li>
+              <li><span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-label">GitHub Actions</span></li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EXPÉRIENCE ────────────────────────────────────────────────────────── -->
+    <section
+      id="experience"
+      class="py-24 max-w-7xl mx-auto px-6 md:px-8"
+      aria-labelledby="experience-title"
+    >
+      <h2 id="experience-title" class="text-4xl font-headline font-bold text-on-surface mb-16">
+        Parcours professionnel
+      </h2>
+
+      <ol class="space-y-12 list-none m-0 p-0" aria-label="Expériences professionnelles">
+
+        <!-- Hellowork -->
+        <li class="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
+          <div class="md:w-1/4 md:sticky md:top-32">
+            <time class="font-label text-primary font-bold text-lg" datetime="2021">
+              2021 — Présent
+            </time>
+          </div>
+          <div class="md:w-3/4 pb-12 border-b border-outline-variant/30">
+            <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Senior Software Engineer / Tech Lead</h3>
+            <p class="text-lg font-medium text-primary mb-4">
+              <a href="https://www.hellowork-group.com" target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-4">Hellowork<span class="sr-only"> (nouvel onglet)</span></a>
+              <span class="text-sm font-label text-on-surface-variant font-normal">— CDI</span>
+            </p>
+          </div>
+        </li>
+
+        <!-- Onepoint -->
+        <li class="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
+          <div class="md:w-1/4 md:sticky md:top-32">
+            <time class="font-label text-on-surface-variant/60 font-bold text-lg" datetime="2016">
+              2016 — 2021
+            </time>
+          </div>
+          <div class="md:w-3/4 pb-12 border-b border-outline-variant/30">
+            <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Ingénieur Développeur</h3>
+            <p class="text-lg font-medium text-primary mb-4">
+              <a href="https://www.groupeonepoint.com" target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-4">Onepoint<span class="sr-only"> (nouvel onglet)</span></a>
+              <span class="text-sm font-label text-on-surface-variant font-normal">— CDI</span>
+            </p>
+          </div>
+        </li>
+
+        <!-- SQLI + Freelance (période chevauchante) -->
+        <li class="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
+          <div class="md:w-1/4 md:sticky md:top-32">
+            <time class="font-label text-on-surface-variant/60 font-bold text-lg" datetime="2012">
+              2012 — 2016
+            </time>
+          </div>
+          <div class="md:w-3/4 pb-12 border-b border-outline-variant/30 space-y-8">
+            <!-- SQLI -->
+            <div>
+              <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Concepteur Développeur</h3>
+              <p class="text-lg font-medium text-primary">
+                <a href="https://www.sqli.com" target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-4">SQLI<span class="sr-only"> (nouvel onglet)</span></a>
+                <span class="text-sm font-label text-on-surface-variant font-normal">— CDI · 2013–2016</span>
+              </p>
+            </div>
+            <!-- Freelance -->
+            <div>
+              <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Développeur Freelance</h3>
+              <p class="text-lg font-medium text-primary">Indépendant <span class="text-sm font-label text-on-surface-variant font-normal">— 2012–2015</span></p>
+            </div>
+          </div>
+        </li>
+
+        <!-- Hubmasters -->
+        <li class="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
+          <div class="md:w-1/4 md:sticky md:top-32">
+            <time class="font-label text-on-surface-variant/60 font-bold text-lg" datetime="2010">
+              2010 — 2012
+            </time>
+          </div>
+          <div class="md:w-3/4 pb-12">
+            <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Développeur Web</h3>
+            <p class="text-lg font-medium text-primary mb-4">Hubmasters <span class="text-sm font-label text-on-surface-variant font-normal">— Agence de communication · Contrat Pro</span></p>
+          </div>
+        </li>
+
+      </ol>
+    </section>
+
+    <!-- ── CONTACT ───────────────────────────────────────────────────────────── -->
+    <section
+      id="contact"
+      class="py-24 bg-surface-container-highest/30"
+      aria-labelledby="contact-title"
+    >
+      <div class="max-w-7xl mx-auto px-6 md:px-8">
+        <div class="liquid-glass rounded-[3rem] p-8 md:p-20 shadow-2xl overflow-hidden relative">
+          <!-- Dégradé décoratif -->
+          <div
+            class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary-fixed/20 to-transparent pointer-events-none"
+            aria-hidden="true"
+          ></div>
+
+          <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16">
+
+            <!-- Informations de contact -->
+            <div>
+              <h2 id="contact-title" class="text-4xl font-headline font-bold text-on-surface mb-6">
+                Travaillons ensemble.
+              </h2>
+              <p class="text-lg text-on-surface-variant mb-12">
+                Que vous ayez un projet précis ou souhaitiez simplement discuter de possibilités techniques, ma boîte mail est toujours ouverte.
+              </p>
+              <address class="space-y-6 not-italic">
+                <div class="flex items-center gap-4">
+                  <div
+                    class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary"
+                    aria-hidden="true"
+                  >
+                    <span class="material-symbols-outlined">location_on</span>
+                  </div>
+                  <span class="font-medium">Bordeaux — présentiel & hybride</span>
+                </div>
+              </address>
+            </div>
+
+            <!-- Formulaire de contact -->
+            <div>
+              <!-- Zone de statut (aria-live pour lecteurs d'écran) -->
+              <div
+                id="form-status"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                class="mb-6 hidden"
+              >
+                <p id="form-status-msg" class="px-4 py-3 rounded-xl text-sm font-label font-semibold"></p>
+              </div>
+
+              <form
+                id="contact-form"
+                novalidate
+                aria-label="Formulaire de contact"
+              >
+                <!--
+                  Champ honeypot anti-spam.
+                  Masqué visuellement ET hors du flux accessible.
+                  Les bots remplissent ce champ ; un humain ne le voit pas.
+                -->
+                <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+                  <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+
+                  <!-- Civilité -->
+                  <div class="col-span-2 sm:col-span-1">
+                    <label for="salutation" class="block text-sm font-label font-bold text-on-surface-variant mb-2">
+                      Civilité
+                    </label>
+                    <select
+                      id="salutation"
+                      name="salutation"
+                      autocomplete="honorific-prefix"
+                      class="w-full bg-surface-variant border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all"
+                    >
+                      <option value="Mme">Mme</option>
+                      <option value="M.">M.</option>
+                      <option value="Autre">Autre</option>
+                    </select>
+                  </div>
+
+                  <!-- Nom / Prénom -->
+                  <div class="col-span-2 sm:col-span-1">
+                    <label for="name" class="block text-sm font-label font-bold text-on-surface-variant mb-2">
+                      Nom / Prénom <abbr title="champ obligatoire">*</abbr>
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      autocomplete="name"
+                      required
+                      aria-required="true"
+                      aria-describedby="name-error"
+                      class="w-full bg-surface-variant border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all"
+                      placeholder="Jean Dupont"
+                    />
+                    <p id="name-error" class="text-error text-xs mt-1 font-label hidden" role="alert" aria-live="assertive"></p>
+                  </div>
+
+                </div>
+
+                <!-- Email -->
+                <div class="mt-6">
+                  <label for="email" class="block text-sm font-label font-bold text-on-surface-variant mb-2">
+                    Adresse e-mail <abbr title="champ obligatoire">*</abbr>
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                    aria-required="true"
+                    aria-describedby="email-error"
+                    class="w-full bg-surface-variant border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all"
+                    placeholder="jean@exemple.com"
+                  />
+                  <p id="email-error" class="text-error text-xs mt-1 font-label hidden" role="alert" aria-live="assertive"></p>
+                </div>
+
+                <!-- Message -->
+                <div class="mt-6">
+                  <label for="message" class="block text-sm font-label font-bold text-on-surface-variant mb-2">
+                    Message <abbr title="champ obligatoire">*</abbr>
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="4"
+                    required
+                    aria-required="true"
+                    aria-describedby="message-error"
+                    class="w-full bg-surface-variant border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                    placeholder="Décrivez-moi votre projet…"
+                  ></textarea>
+                  <p id="message-error" class="text-error text-xs mt-1 font-label hidden" role="alert" aria-live="assertive"></p>
+                </div>
+
+                <!-- Bouton envoi -->
+                <button
+                  type="submit"
+                  id="submit-btn"
+                  class="mt-6 w-full bg-primary text-on-primary font-headline font-bold py-4 rounded-xl hover:shadow-lg transition-all inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <span id="submit-text">Envoyer le message</span>
+                  <span class="material-symbols-outlined" aria-hidden="true" id="submit-icon">send</span>
+                </button>
+
+                <p class="text-xs text-on-surface-variant font-label text-center mt-4">
+                  Les champs marqués <abbr title="obligatoire">*</abbr> sont obligatoires.
+                  Vos données sont utilisées uniquement pour répondre à votre message.
+                </p>
+
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════ PIED DE PAGE -->
+  <footer class="w-full py-12 mt-24 bg-slate-50">
+    <div class="flex flex-col md:flex-row justify-between items-center px-6 md:px-8 border-t border-slate-200/50 max-w-7xl mx-auto pt-12 gap-8">
+      <div class="text-center md:text-left">
+        <p class="font-body text-xs uppercase tracking-widest text-slate-500">
+          © <span id="current-year">2025</span> Robin Aldasoro
+        </p>
+      </div>
+
+      <nav aria-label="Liens secondaires">
+        <ul class="flex gap-6 list-none m-0 p-0">
+          <li>
+            <a
+              href="#"
+              id="link-github"
+              title="Bientôt le lien"
+              class="font-body text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+              rel="noopener noreferrer"
+              target="_blank"
+            >GitHub <span class="sr-only">(nouvel onglet)</span></a>
+          </li>
+          <li>
+            <a
+              href="#"
+              id="link-linkedin"
+              title="Bientôt le lien"
+              class="font-body text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+              rel="noopener noreferrer"
+              target="_blank"
+            >LinkedIn <span class="sr-only">(nouvel onglet)</span></a>
+          </li>
+          <li>
+            <a
+              href="#"
+              title="Bientôt le lien"
+              class="font-body text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+            >Accessibilité</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════ SCRIPTS -->
+  <script>
+    'use strict';
+
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // ── Menu mobile ────────────────────────────────────────────────────────────
+    const menuBtn    = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon   = menuBtn.querySelector('.material-symbols-outlined');
+
+    menuBtn.addEventListener('click', () => {
+      const isNowOpen = mobileMenu.classList.toggle('hidden') === false;
+      menuBtn.setAttribute('aria-expanded', String(isNowOpen));
+      menuBtn.setAttribute('aria-label', isNowOpen ? 'Fermer le menu' : 'Ouvrir le menu de navigation');
+      menuIcon.textContent = isNowOpen ? 'close' : 'menu';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.setAttribute('aria-label', 'Ouvrir le menu de navigation');
+        menuIcon.textContent = 'menu';
+      });
+    });
+
+    // ── Lien actif selon la section visible ────────────────────────────────────
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('#nav-hero, #nav-skills, #nav-experience, #nav-contact');
+
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          const active = link.getAttribute('href') === `#${id}`;
+          link.classList.toggle('text-primary',          active);
+          link.classList.toggle('font-bold',             active);
+          link.classList.toggle('border-b-2',            active);
+          link.classList.toggle('border-primary',        active);
+          link.classList.toggle('text-on-surface-variant', !active);
+          active
+            ? link.setAttribute('aria-current', 'page')
+            : link.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+
+    sections.forEach(s => sectionObserver.observe(s));
+
+    // ── Formulaire de contact (Brevo Transactional API) ────────────────────────
+    //
+    // ⚠️  SÉCURITÉ
+    //  • Créez une clé API Brevo avec le scope "Transactional emails" UNIQUEMENT.
+    //  • Activez un domaine d'envoi vérifié dans Brevo pour éviter le spoofing.
+    //  • Pour une sécurité maximale (clé non exposée), proxifiez l'appel via une
+    //    serverless function (Netlify Function, Vercel Edge, Cloudflare Worker…).
+    //
+    const BREVO_API_KEY   = 'VOTRE_CLE_API_BREVO'; // ← remplacez ici
+    const RECIPIENT_EMAIL = 'contact@robinaldasoro.com';
+    const RECIPIENT_NAME  = 'Robin Aldasoro';
+    const RATE_LIMIT_MS   = 30_000; // 30 secondes entre deux envois
+
+    let lastSent = 0;
+
+    /** Échappe les caractères HTML pour sécuriser le corps HTML de l'e-mail */
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g,  '&amp;')
+        .replace(/</g,  '&lt;')
+        .replace(/>/g,  '&gt;')
+        .replace(/"/g,  '&quot;')
+        .replace(/'/g,  '&#39;');
+    }
+
+    function showFieldError(fieldId, msg) {
+      const field = document.getElementById(fieldId);
+      const error = document.getElementById(`${fieldId}-error`);
+      field.classList.add('field-error');
+      field.setAttribute('aria-invalid', 'true');
+      error.textContent = msg;
+      error.classList.remove('hidden');
+    }
+
+    function clearFieldError(fieldId) {
+      const field = document.getElementById(fieldId);
+      const error = document.getElementById(`${fieldId}-error`);
+      field.classList.remove('field-error');
+      field.removeAttribute('aria-invalid');
+      error.classList.add('hidden');
+      error.textContent = '';
+    }
+
+    function validateForm(data) {
+      let valid = true;
+      ['name', 'email', 'message'].forEach(clearFieldError);
+
+      if (!data.name.trim()) {
+        showFieldError('name', 'Veuillez indiquer votre nom.');
+        valid = false;
+      }
+
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      if (!emailRe.test(data.email.trim())) {
+        showFieldError('email', 'Veuillez saisir une adresse e-mail valide.');
+        valid = false;
+      }
+
+      if (data.message.trim().length < 10) {
+        showFieldError('message', 'Votre message doit contenir au moins 10 caractères.');
+        valid = false;
+      }
+
+      return valid;
+    }
+
+    function setFormStatus(type, msg) {
+      const container = document.getElementById('form-status');
+      const p         = document.getElementById('form-status-msg');
+      container.classList.remove('hidden');
+      p.className = `px-4 py-3 rounded-xl text-sm font-label font-semibold ${
+        type === 'success'
+          ? 'bg-primary-fixed text-on-primary-fixed'
+          : 'bg-error-container text-on-error-container'
+      }`;
+      p.textContent = msg;
+      // Déplace le focus vers la zone de statut pour les lecteurs d'écran
+      container.setAttribute('tabindex', '-1');
+      container.focus();
+    }
+
+    document.getElementById('contact-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const form = e.target;
+
+      const data = {
+        honeypot:   form.website.value,
+        salutation: form.salutation.value,
+        name:       form.name.value,
+        email:      form.email.value,
+        message:    form.message.value,
+      };
+
+      // Anti-spam : honeypot rempli → on ignore silencieusement
+      if (data.honeypot) return;
+
+      if (!validateForm(data)) {
+        // Focus sur le premier champ invalide (RGAA 11.10)
+        const firstInvalid = form.querySelector('[aria-invalid="true"]');
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
+
+      // Rate limiting côté client
+      if (Date.now() - lastSent < RATE_LIMIT_MS) {
+        setFormStatus('error', 'Merci de patienter quelques secondes avant de renvoyer un message.');
+        return;
+      }
+
+      const btn      = document.getElementById('submit-btn');
+      const btnText  = document.getElementById('submit-text');
+      const btnIcon  = document.getElementById('submit-icon');
+
+      btn.disabled       = true;
+      btnText.textContent = 'Envoi en cours…';
+      btnIcon.textContent = 'hourglass_empty';
+
+      try {
+        const senderName = `${data.salutation} ${data.name}`.trim();
+
+        const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'api-key': BREVO_API_KEY,
+          },
+          body: JSON.stringify({
+            sender:  { name: senderName, email: data.email },
+            to:      [{ email: RECIPIENT_EMAIL, name: RECIPIENT_NAME }],
+            replyTo: { email: data.email, name: senderName },
+            subject: `[Portfolio] Message de ${senderName}`,
+            textContent: [
+              `Civilité    : ${data.salutation}`,
+              `Nom/Prénom  : ${data.name}`,
+              `Email       : ${data.email}`,
+              '',
+              'Message :',
+              data.message,
+            ].join('\n'),
+            htmlContent: `
+              <p><strong>Civilité :</strong> ${escapeHtml(data.salutation)}</p>
+              <p><strong>Nom / Prénom :</strong> ${escapeHtml(data.name)}</p>
+              <p><strong>Email :</strong> <a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></p>
+              <hr style="border:none;border-top:1px solid #ccc;margin:1rem 0;" />
+              <p style="white-space:pre-wrap">${escapeHtml(data.message)}</p>
+            `.trim(),
+          }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.message || `Erreur HTTP ${res.status}`);
+        }
+
+        lastSent = Date.now();
+        form.reset();
+        setFormStatus('success', 'Votre message a bien été envoyé ! Je vous répondrai dans les plus brefs délais.');
+
+      } catch (err) {
+        console.error('[Brevo]', err);
+        setFormStatus('error', "Une erreur est survenue lors de l'envoi. Merci de réessayer dans quelques instants.");
+      } finally {
+        btn.disabled        = false;
+        btnText.textContent  = 'Envoyer le message';
+        btnIcon.textContent  = 'send';
+      }
+    });
+  </script>
+
+</body>
+</html>
