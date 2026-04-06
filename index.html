@@ -770,25 +770,10 @@
     // ⚠️  SÉCURITÉ
     //  • Créez une clé API Brevo avec le scope "Transactional emails" UNIQUEMENT.
     //  • Activez un domaine d'envoi vérifié dans Brevo pour éviter le spoofing.
-    //  • Pour une sécurité maximale (clé non exposée), proxifiez l'appel via une
-    //    serverless function (Netlify Function, Vercel Edge, Cloudflare Worker…).
-    //
-    const BREVO_API_KEY   = 'VOTRE_CLE_API_BREVO'; // ← remplacez ici
-    const RECIPIENT_EMAIL = 'contact@robinaldasoro.com';
-    const RECIPIENT_NAME  = 'Robin Aldasoro';
-    const RATE_LIMIT_MS   = 30_000; // 30 secondes entre deux envois
+    const FUNCTION_URL  = 'https://nswizardlyallenwngldmkh-fct-funny-albattani.functions.fnc.fr-par.scw.cloud';
+    const RATE_LIMIT_MS = 30_000; // 30 secondes entre deux envois
 
     let lastSent = 0;
-
-    /** Échappe les caractères HTML pour sécuriser le corps HTML de l'e-mail */
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g,  '&amp;')
-        .replace(/</g,  '&lt;')
-        .replace(/>/g,  '&gt;')
-        .replace(/"/g,  '&quot;')
-        .replace(/'/g,  '&#39;');
-    }
 
     function showFieldError(fieldId, msg) {
       const field = document.getElementById(fieldId);
@@ -883,40 +868,21 @@
       btnIcon.textContent = 'hourglass_empty';
 
       try {
-        const senderName = `${data.salutation} ${data.name}`.trim();
-
-        const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+        const res = await fetch(FUNCTION_URL, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'api-key': BREVO_API_KEY,
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            sender:  { name: senderName, email: data.email },
-            to:      [{ email: RECIPIENT_EMAIL, name: RECIPIENT_NAME }],
-            replyTo: { email: data.email, name: senderName },
-            subject: `[Portfolio] Message de ${senderName}`,
-            textContent: [
-              `Civilité    : ${data.salutation}`,
-              `Nom/Prénom  : ${data.name}`,
-              `Email       : ${data.email}`,
-              '',
-              'Message :',
-              data.message,
-            ].join('\n'),
-            htmlContent: `
-              <p><strong>Civilité :</strong> ${escapeHtml(data.salutation)}</p>
-              <p><strong>Nom / Prénom :</strong> ${escapeHtml(data.name)}</p>
-              <p><strong>Email :</strong> <a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></p>
-              <hr style="border:none;border-top:1px solid #ccc;margin:1rem 0;" />
-              <p style="white-space:pre-wrap">${escapeHtml(data.message)}</p>
-            `.trim(),
+            honeypot:   data.honeypot,
+            salutation: data.salutation,
+            name:       data.name,
+            email:      data.email,
+            message:    data.message,
           }),
         });
 
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
-          throw new Error(err.message || `Erreur HTTP ${res.status}`);
+          throw new Error(err.error || `Erreur HTTP ${res.status}`);
         }
 
         lastSent = Date.now();
@@ -924,7 +890,7 @@
         setFormStatus('success', 'Votre message a bien été envoyé ! Je vous répondrai dans les plus brefs délais.');
 
       } catch (err) {
-        console.error('[Brevo]', err);
+        console.error('[Function]', err);
         setFormStatus('error', "Une erreur est survenue lors de l'envoi. Merci de réessayer dans quelques instants.");
       } finally {
         btn.disabled        = false;
