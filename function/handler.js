@@ -21,6 +21,19 @@ function isValidEmail(email) {
 }
 
 module.exports.handle = async (event) => {
+  try {
+    return await _handle(event);
+  } catch (err) {
+    console.error('[handler crash]', err);
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
+      body: JSON.stringify({ error: err.message, stack: err.stack }),
+    };
+  }
+};
+
+async function _handle(event) {
   const method = (event.httpMethod || event.method || '').toUpperCase();
 
   // Preflight CORS
@@ -99,7 +112,7 @@ module.exports.handle = async (event) => {
   }
 
   return response(200, { success: true });
-};
+}
 
 function esc(str) {
   return String(str || '')

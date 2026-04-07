@@ -826,6 +826,7 @@
 
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
+          console.error('[Function error detail]', err);
           throw new Error(err.error || `Erreur HTTP ${res.status}`);
         }
 
