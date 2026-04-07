@@ -21,12 +21,14 @@ function isValidEmail(email) {
 }
 
 module.exports.handle = async (event) => {
+  const method = (event.httpMethod || event.method || '').toUpperCase();
+
   // Preflight CORS
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: CORS_HEADERS, body: '' };
+  if (method === 'OPTIONS') {
+    return { statusCode: 200, headers: { ...CORS_HEADERS, 'Content-Length': '0' }, body: '' };
   }
 
-  if (event.httpMethod !== 'POST') {
+  if (method !== 'POST') {
     return response(405, { error: 'Méthode non autorisée.' });
   }
 
