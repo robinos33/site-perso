@@ -34,7 +34,9 @@ module.exports.handle = async (event) => {
 
   let data;
   try {
-    data = JSON.parse(event.body || '{}');
+    // Accepte application/json et text/plain (évite le preflight CORS)
+    const raw = typeof event.body === 'string' ? event.body : JSON.stringify(event.body || {});
+    data = JSON.parse(raw);
   } catch {
     return response(400, { error: 'Corps de requête invalide.' });
   }

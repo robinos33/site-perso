@@ -814,7 +814,7 @@
       try {
         const res = await fetch(FUNCTION_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify({
             honeypot:   data.honeypot,
             salutation: data.salutation,
