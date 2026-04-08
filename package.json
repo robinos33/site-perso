@@ -2,7 +2,7 @@
   "name": "site-perso",
   "version": "1.0.0",
   "scripts": {
-    "build": "tailwindcss -i ./assets/input.css -o ./assets/output.css --minify",
+    "build": "tailwindcss -i ./assets/input.css -o ./assets/output.css --minify && node build.mjs",
     "dev": "tailwindcss -i ./assets/input.css -o ./assets/output.css --watch"
   },
   "devDependencies": {
