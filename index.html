@@ -514,7 +514,7 @@
                   Les bots remplissent ce champ ; un humain ne le voit pas.
                 -->
                 <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
-                  <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" />
+                  <input type="text" name="_b" id="_b" tabindex="-1" autocomplete="new-password" />
                 </div>
 
                 <div class="grid grid-cols-2 gap-6">
@@ -790,7 +790,7 @@
       const form = e.target;
 
       const data = {
-        honeypot:   form.website.value,
+        honeypot:   form._b.value,
         salutation: form.salutation.value,
         name:       form.name.value,
         email:      form.email.value,
@@ -801,7 +801,7 @@
       if (data.honeypot) return;
 
       if (!validateForm(data)) {
-        // Focus sur le premier champ invalide (RGAA 11.10)
+        setFormStatus('error', 'Veuillez corriger les champs indiqués en rouge avant d\'envoyer.');
         const firstInvalid = form.querySelector('[aria-invalid="true"]');
         if (firstInvalid) firstInvalid.focus();
         return;
