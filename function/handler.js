@@ -1,13 +1,25 @@
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin':  process.env.ALLOWED_ORIGIN || '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGIN || '*')
+  .split(',')
+  .map(o => o.trim());
 
-function response(statusCode, body) {
+function corsHeaders(requestOrigin) {
+  const origin = ALLOWED_ORIGINS.includes('*')
+    ? '*'
+    : ALLOWED_ORIGINS.includes(requestOrigin)
+      ? requestOrigin
+      : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin':  origin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Vary': 'Origin',
+  };
+}
+
+function response(statusCode, body, requestOrigin) {
   return {
     statusCode,
-    headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
+    headers: { 'Content-Type': 'application/json', ...corsHeaders(requestOrigin) },
     body: JSON.stringify(body),
   };
 }
@@ -28,13 +40,14 @@ function esc(str) {
 export async function handle(event) {
   try {
     const method = (event.httpMethod || event.method || '').toUpperCase();
+    const requestOrigin = (event.headers && (event.headers['origin'] || event.headers['Origin'])) || '';
 
     if (method === 'OPTIONS') {
-      return { statusCode: 200, headers: { ...CORS_HEADERS, 'Content-Length': '0' }, body: '' };
+      return { statusCode: 200, headers: { ...corsHeaders(requestOrigin), 'Content-Length': '0' }, body: '' };
     }
 
     if (method !== 'POST') {
-      return response(405, { error: 'Méthode non autorisée.' });
+      return response(405, { error: 'Méthode non autorisée.' }, requestOrigin);
     }
 
     let data;
@@ -42,23 +55,23 @@ export async function handle(event) {
       const raw = typeof event.body === 'string' ? event.body : JSON.stringify(event.body || {});
       data = JSON.parse(raw);
     } catch {
-      return response(400, { error: 'Corps de requête invalide.' });
+      return response(400, { error: 'Corps de requête invalide.' }, requestOrigin);
     }
 
     const { honeypot, salutation, name, email, message } = data;
 
     if (honeypot) {
-      return response(200, { success: true });
+      return response(200, { success: true }, requestOrigin);
     }
 
     if (!name || !name.trim()) {
-      return response(400, { error: 'Le nom est requis.' });
+      return response(400, { error: 'Le nom est requis.' }, requestOrigin);
     }
     if (!email || !isValidEmail(email.trim())) {
-      return response(400, { error: 'Adresse e-mail invalide.' });
+      return response(400, { error: 'Adresse e-mail invalide.' }, requestOrigin);
     }
     if (!message || message.trim().length < 10) {
-      return response(400, { error: 'Le message doit contenir au moins 10 caractères.' });
+      return response(400, { error: 'Le message doit contenir au moins 10 caractères.' }, requestOrigin);
     }
 
     const senderName = `${salutation || ''} ${name}`.trim();
@@ -95,13 +108,13 @@ export async function handle(event) {
     if (!brevoRes.ok) {
       const err = await brevoRes.json().catch(() => ({}));
       console.error('Brevo error:', err);
-      return response(502, { error: "Erreur lors de l'envoi de l'e-mail." });
+      return response(502, { error: "Erreur lors de l'envoi de l'e-mail." }, requestOrigin);
     }
 
-    return response(200, { success: true });
+    return response(200, { success: true }, requestOrigin);
 
   } catch (err) {
     console.error('[handler crash]', err);
-    return response(500, { error: 'Erreur interne du serveur.' });
+    return response(500, { error: 'Erreur interne du serveur.' }, requestOrigin);
   }
 }
