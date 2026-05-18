@@ -208,9 +208,10 @@
 
         <div class="relative rounded-3xl overflow-hidden aspect-[4/5] shadow-2xl">
           <img
+            id="hero-photo"
             src="assets/robin-aldasoro.jpg"
             alt="Portrait de Robin Aldasoro, développeur web"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover transition-opacity duration-300"
             loading="eager"
             fetchpriority="high"
             width="800"
@@ -693,7 +694,7 @@
     <div class="flex flex-col md:flex-row justify-between items-center px-6 md:px-8 border-t border-slate-200/50 max-w-7xl mx-auto pt-12 gap-8">
       <div class="text-center md:text-left">
         <p class="font-body text-xs uppercase tracking-widest text-slate-500">
-          © <span id="current-year">2025</span> Robin Aldasoro
+          © <span id="current-year">2025</span> Robin Aldasoro <span class="text-slate-300 normal-case tracking-normal font-mono">↑↑↓↓←→←→BA</span>
         </p>
         <p class="font-body text-xs text-slate-400 mt-1">
           Made with <s>Love</s> Claude in Bordeaux
@@ -922,6 +923,39 @@
         btn.disabled        = false;
         btnText.textContent  = 'Envoyer le message';
         btnIcon.textContent  = 'send';
+      }
+    });
+  </script>
+
+  <script>
+    // ── Konami Code easter egg ────────────────────────────────────────────────
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    const HAIRSTYLES = [
+      'assets/robin-hair-1.png',
+      'assets/robin-hair-2.png',
+      'assets/robin-hair-3.png',
+      'assets/robin-hair-4.png',
+      'assets/robin-hair-5.png',
+    ];
+    const BASE_PHOTO = 'assets/robin-aldasoro.jpg';
+
+    let konamiIndex = 0;
+    document.addEventListener('keydown', (e) => {
+      if (e.key === KONAMI[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === KONAMI.length) {
+          konamiIndex = 0;
+          const photo = document.getElementById('hero-photo');
+          const pool = HAIRSTYLES.length ? HAIRSTYLES : [BASE_PHOTO];
+          const candidates = pool.filter(s => !photo.src.endsWith(s.replace('assets/', '')));
+          const next = candidates.length
+            ? candidates[Math.floor(Math.random() * candidates.length)]
+            : pool[0];
+          photo.style.opacity = '0';
+          setTimeout(() => { photo.src = next; photo.style.opacity = '1'; }, 300);
+        }
+      } else {
+        konamiIndex = e.key === KONAMI[0] ? 1 : 0;
       }
     });
   </script>
