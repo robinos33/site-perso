@@ -939,25 +939,37 @@
     ];
     const BASE_PHOTO = 'assets/robin-aldasoro.jpg';
 
+    function swapHairstyle() {
+      const photo = document.getElementById('hero-photo');
+      const pool = HAIRSTYLES.length ? HAIRSTYLES : [BASE_PHOTO];
+      const candidates = pool.filter(s => !photo.src.endsWith(s.replace('assets/', '')));
+      const next = candidates.length
+        ? candidates[Math.floor(Math.random() * candidates.length)]
+        : pool[0];
+      photo.style.opacity = '0';
+      setTimeout(() => { photo.src = next; photo.style.opacity = '1'; }, 300);
+    }
+
+    // Konami Code (desktop)
     let konamiIndex = 0;
     document.addEventListener('keydown', (e) => {
       if (e.key === KONAMI[konamiIndex]) {
         konamiIndex++;
-        if (konamiIndex === KONAMI.length) {
-          konamiIndex = 0;
-          const photo = document.getElementById('hero-photo');
-          const pool = HAIRSTYLES.length ? HAIRSTYLES : [BASE_PHOTO];
-          const candidates = pool.filter(s => !photo.src.endsWith(s.replace('assets/', '')));
-          const next = candidates.length
-            ? candidates[Math.floor(Math.random() * candidates.length)]
-            : pool[0];
-          photo.style.opacity = '0';
-          setTimeout(() => { photo.src = next; photo.style.opacity = '1'; }, 300);
-        }
+        if (konamiIndex === KONAMI.length) { konamiIndex = 0; swapHairstyle(); }
       } else {
         konamiIndex = e.key === KONAMI[0] ? 1 : 0;
       }
     });
+
+    // Long press (mobile)
+    const photo = document.getElementById('hero-photo');
+    let pressTimer = null;
+    photo.addEventListener('touchstart', (e) => {
+      pressTimer = setTimeout(() => { pressTimer = null; swapHairstyle(); }, 700);
+    }, { passive: true });
+    photo.addEventListener('touchend', () => { clearTimeout(pressTimer); pressTimer = null; });
+    photo.addEventListener('touchmove', () => { clearTimeout(pressTimer); pressTimer = null; });
+    photo.addEventListener('contextmenu', (e) => e.preventDefault());
   </script>
 
 </body>
