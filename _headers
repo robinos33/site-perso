@@ -1,2 +1,5 @@
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://covers.openlibrary.org; connect-src 'self' https://nswizardlyallenwngldmkh-fct-funny-albattani.functions.fnc.fr-par.scw.cloud; frame-ancestors 'none'
+
+/assets/robin-hair-*.png
+  X-Robots-Tag: noindex, nofollow
