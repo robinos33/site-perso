@@ -87,6 +87,27 @@
       border-radius: 4px;
     }
 
+    /* @tailwindcss/forms applique outline: 2px solid transparent sur :focus (spécificité 0,1,1)
+       ce qui écrase :focus-visible (0,1,0). On rétablit le contour clavier avec la même spécificité. */
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid #006097;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* backdrop-filter sur la nav crée un contexte de composition Chromium dans lequel
+       outline peut être rendu sous la couche blurée. box-shadow est composité avec
+       l'élément lui-même et reste toujours visible. */
+    nav a:focus-visible,
+    nav button:focus-visible {
+      outline: 3px solid #006097; /* fallback Windows High Contrast */
+      outline-offset: 0;
+      border-radius: 6px;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 5px #006097;
+    }
+
     /* Champ en erreur */
     .field-error {
       outline: 2px solid #ba1a1a !important;
@@ -968,9 +989,17 @@
       setTimeout(() => { photo.src = next; photo.style.opacity = '1'; }, 300);
     }
 
-    // Konami Code (desktop)
+    // Konami Code (desktop) + fermeture menu mobile par Échap
     let konamiIndex = 0;
     document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.setAttribute('aria-label', 'Ouvrir le menu de navigation');
+        menuIcon.textContent = 'menu';
+        menuBtn.focus();
+        return;
+      }
       if (e.key === KONAMI[konamiIndex]) {
         konamiIndex++;
         if (konamiIndex === KONAMI.length) { konamiIndex = 0; swapHairstyle(); }
