@@ -1,3 +1,156 @@
+/*
+ * Point d'entrée Tailwind.
+ *
+ * Ce fichier contient tout ce qui est partagé par les deux pages : les polices
+ * auto-hébergées et le socle d'accessibilité. Le reste passe par les classes
+ * utilitaires dans les HTML.
+ *
+ * ⚠️  Chemins des polices : `url('fonts/…')` est relatif à `assets/output.css`,
+ *     ce qui est correct en développement (CSS chargé via <link>). En
+ *     production, build.mjs inline ce CSS dans le <head> des pages — les URLs
+ *     deviennent alors relatives au document HTML. Le script les réécrit en
+ *     `assets/fonts/…` au moment de l'inlining. Ne pas mettre de chemin absolu
+ *     ici : cela casserait l'ouverture des pages en file://.
+ */
+
+/* ── Polices auto-hébergées (sous-ensemble latin, couvre tous les accents français)
+      Bricolage Grotesque et IBM Plex Sans sont variables : un seul fichier chacune. */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+  src: url('fonts/bricolage-grotesque-600-800.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('fonts/ibm-plex-sans-400-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/ibm-plex-mono-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/ibm-plex-mono-500.woff2') format('woff2');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* Lien d'évitement — RGAA critère 12.7 */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    padding: 0.625rem 1.5rem;
+    background: theme('colors.blue');
+    color: #fff;
+    font-family: theme('fontFamily.mono');
+    font-size: 0.875rem;
+    font-weight: 500;
+    z-index: 9999;
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus { top: 0; }
+
+  /* Focus visible global — RGAA critère 10.7.
+     La direction « Atelier » est à angles vifs : le contour l'est aussi. */
+  :focus-visible {
+    outline: 2px solid theme('colors.blue');
+    outline-offset: 3px;
+  }
+
+  /* @tailwindcss/forms pose `outline: 2px solid transparent` sur :focus
+     (spécificité 0,1,1), ce qui écrase :focus-visible (0,1,0).
+     On rétablit le contour clavier à spécificité égale. */
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid theme('colors.blue');
+    outline-offset: 3px;
+  }
+
+  /* Champ en erreur */
+  .field-error {
+    outline: 2px solid theme('colors.error') !important;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /*
+   * Duotone du portrait.
+   *
+   * L'effet est porté par le CONTENEUR, pas par l'image : le fond outremer
+   * fournit teinte et saturation, `luminosity` ne garde de la photo que ses
+   * valeurs de gris. Conséquence utile — n'importe quelle image injectée dans
+   * ce conteneur hérite du traitement. Les coiffures de l'easter egg konami
+   * sont donc traitées automatiquement, sans retouche des PNG.
+   *
+   * `isolation: isolate` confine le mélange au conteneur : sans lui, l'image
+   * irait se mélanger avec ce qui se trouve derrière dans la pile.
+   */
+  .duotone {
+    background-color: theme('colors.blue');
+    isolation: isolate;
+  }
+  .duotone > img {
+    mix-blend-mode: luminosity;
+    opacity: 0.88;
+  }
+
+  /*
+   * Surlignage ambre du titre principal.
+   *
+   * Un dégradé à paliers francs plutôt qu'un fond : la bande s'arrête sous la
+   * hauteur d'x et repart avant les jambages, donc elle suit chaque ligne quand
+   * le titre se réenroule, sans jamais recouvrir les descendantes.
+   */
+  .hl-amber {
+    background-image: linear-gradient(
+      transparent 68%,
+      theme('colors.amber') 68%,
+      theme('colors.amber') 94%,
+      transparent 94%
+    );
+  }
+
+  /* Pulsations du schéma d'orchestration (section IA agentique) */
+  .flow-pulse {
+    stroke-dasharray: 5 90;
+    animation: flow-dash 2.6s linear infinite;
+  }
+  @keyframes flow-dash {
+    to { stroke-dashoffset: -95; }
+  }
+}
+
+/* ── Respect de prefers-reduced-motion ────────────────────────────────────
+   Le schéma reste lisible sans animation : les liaisons deviennent des traits
+   pleins atténués plutôt que des pointillés figés au milieu de leur course. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .flow-pulse {
+    stroke-dasharray: none;
+    opacity: 0.5;
+  }
+}
