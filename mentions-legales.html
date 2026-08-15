@@ -9,120 +9,80 @@
 
   <title>Mentions légales — Robin Aldasoro</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600&family=Space+Grotesk:wght@500;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'"
-  />
-  <noscript>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600&family=Space+Grotesk:wght@500;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
-    />
-  </noscript>
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/bricolage-grotesque-600-800.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/ibm-plex-sans-400-600.woff2" crossorigin />
 
   <link rel="stylesheet" href="assets/output.css" />
-
-  <style>
-    .material-symbols-outlined {
-      font-family: 'Material Symbols Outlined';
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      vertical-align: middle;
-      font-size: 1.25rem;
-      line-height: 1;
-      display: inline-block;
-    }
-    .skip-link {
-      position: absolute;
-      top: -100%;
-      left: 0;
-      padding: 0.5rem 1.25rem;
-      background: #006097;
-      color: #fff;
-      font-weight: 700;
-      z-index: 9999;
-      transition: top 0.15s ease;
-    }
-    .skip-link:focus { top: 0; }
-    :focus-visible {
-      outline: 3px solid #006097;
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-  </style>
 </head>
-<body class="bg-background text-on-surface font-body">
+<body class="bg-paper text-ink font-body antialiased selection:bg-amber selection:text-ink">
 
   <a href="#contenu-principal" class="skip-link">Aller au contenu principal</a>
 
   <!-- Navigation -->
   <header>
-    <nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl shadow-sm" aria-label="Navigation principale">
-      <div class="flex justify-between items-center px-6 md:px-8 py-4 max-w-7xl mx-auto">
-        <a href="index.html" class="text-xl font-headline font-bold tracking-tighter text-on-surface">
+    <nav class="fixed top-0 w-full z-50 bg-paper border-b border-ink" aria-label="Navigation principale">
+      <div class="flex justify-between items-center gap-6 px-5 md:px-10 py-3">
+        <a href="index.html" class="font-display font-extrabold text-lg tracking-tighter text-ink">
           Robin Aldasoro
         </a>
         <a
           href="index.html"
-          class="inline-flex items-center gap-2 text-sm font-headline font-medium text-on-surface-variant hover:text-primary transition-colors"
+          class="inline-flex items-center gap-2 text-sm font-medium text-ink-2 hover:text-blue transition-colors"
         >
-          <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          <svg class="w-4 h-4" aria-hidden="true"><use href="#i-arrow-left" /></svg>
           Retour au site
         </a>
       </div>
     </nav>
   </header>
 
-  <main id="contenu-principal" tabindex="-1" class="pt-32 pb-24 px-6 md:px-8 max-w-3xl mx-auto">
+  <main id="contenu-principal" tabindex="-1" class="pt-28 pb-20 px-5 md:px-10 max-w-3xl mx-auto">
 
-    <h1 class="text-4xl font-headline font-bold text-on-surface mb-16 tracking-tight">
+    <h1 class="font-display font-extrabold text-4xl md:text-5xl leading-[.98] tracking-tightest mb-12">
       Mentions légales
     </h1>
 
-    <div class="space-y-12">
+    <div class="space-y-11">
 
       <!-- Éditeur -->
       <section aria-labelledby="editeur-title">
-        <h2 id="editeur-title" class="text-xl font-headline font-bold text-on-surface mb-4 pb-3 border-b border-outline-variant/30">
+        <h2 id="editeur-title" class="font-display font-bold text-xl tracking-tighter mb-4 pb-3 border-b border-ink">
           Éditeur du site
         </h2>
-        <dl class="space-y-3 text-on-surface-variant">
-          <div class="flex gap-4">
-            <dt class="font-label font-semibold text-on-surface min-w-[140px]">Nom</dt>
+        <dl class="space-y-3 text-ink-2">
+          <div class="flex flex-col sm:flex-row gap-1 sm:gap-4">
+            <dt class="font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink pt-1 sm:min-w-[150px]">Nom</dt>
             <dd>Robin Aldasoro</dd>
           </div>
-          <div class="flex gap-4">
-            <dt class="font-label font-semibold text-on-surface min-w-[140px]">Code postal</dt>
+          <div class="flex flex-col sm:flex-row gap-1 sm:gap-4">
+            <dt class="font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink pt-1 sm:min-w-[150px]">Code postal</dt>
             <dd>33130 Bègles, France</dd>
           </div>
-          <div class="flex gap-4">
-            <dt class="font-label font-semibold text-on-surface min-w-[140px]">Contact</dt>
-            <dd><a href="index.html#contact" class="text-primary hover:underline underline-offset-4">Via le formulaire de contact</a></dd>
+          <div class="flex flex-col sm:flex-row gap-1 sm:gap-4">
+            <dt class="font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink pt-1 sm:min-w-[150px]">Contact</dt>
+            <dd><a href="index.html#contact" class="text-blue hover:underline underline-offset-4">Via le formulaire de contact</a></dd>
           </div>
         </dl>
       </section>
 
       <!-- Hébergement -->
       <section aria-labelledby="hebergeur-title">
-        <h2 id="hebergeur-title" class="text-xl font-headline font-bold text-on-surface mb-4 pb-3 border-b border-outline-variant/30">
+        <h2 id="hebergeur-title" class="font-display font-bold text-xl tracking-tighter mb-4 pb-3 border-b border-ink">
           Hébergement
         </h2>
-        <dl class="space-y-3 text-on-surface-variant">
-          <div class="flex gap-4">
-            <dt class="font-label font-semibold text-on-surface min-w-[140px]">Société</dt>
+        <dl class="space-y-3 text-ink-2">
+          <div class="flex flex-col sm:flex-row gap-1 sm:gap-4">
+            <dt class="font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink pt-1 sm:min-w-[150px]">Société</dt>
             <dd>Cloudflare, Inc.</dd>
           </div>
-          <div class="flex gap-4">
-            <dt class="font-label font-semibold text-on-surface min-w-[140px]">Adresse</dt>
+          <div class="flex flex-col sm:flex-row gap-1 sm:gap-4">
+            <dt class="font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink pt-1 sm:min-w-[150px]">Adresse</dt>
             <dd>101 Townsend St, San Francisco, CA 94107, États-Unis</dd>
           </div>
-          <div class="flex gap-4">
-            <dt class="font-label font-semibold text-on-surface min-w-[140px]">Site</dt>
+          <div class="flex flex-col sm:flex-row gap-1 sm:gap-4">
+            <dt class="font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink pt-1 sm:min-w-[150px]">Site</dt>
             <dd>
-              <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline underline-offset-4">
+              <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-blue hover:underline underline-offset-4">
                 cloudflare.com <span class="sr-only">(nouvel onglet)</span>
               </a>
             </dd>
@@ -132,33 +92,33 @@
 
       <!-- Propriété intellectuelle -->
       <section aria-labelledby="propriete-title">
-        <h2 id="propriete-title" class="text-xl font-headline font-bold text-on-surface mb-4 pb-3 border-b border-outline-variant/30">
+        <h2 id="propriete-title" class="font-display font-bold text-xl tracking-tighter mb-4 pb-3 border-b border-ink">
           Propriété intellectuelle
         </h2>
-        <p class="text-on-surface-variant leading-relaxed">
+        <p class="text-ink-2 leading-relaxed">
           L'ensemble du contenu de ce site (textes, visuels, code) est la propriété exclusive de Robin Aldasoro. Toute reproduction, même partielle, est interdite sans autorisation préalable.
         </p>
       </section>
 
       <!-- Données personnelles -->
       <section aria-labelledby="donnees-title">
-        <h2 id="donnees-title" class="text-xl font-headline font-bold text-on-surface mb-4 pb-3 border-b border-outline-variant/30">
+        <h2 id="donnees-title" class="font-display font-bold text-xl tracking-tighter mb-4 pb-3 border-b border-ink">
           Données personnelles
         </h2>
-        <p class="text-on-surface-variant leading-relaxed mb-4">
+        <p class="text-ink-2 leading-relaxed mb-4">
           Ce site ne collecte aucune donnée personnelle à des fins de suivi ou de profilage. Le formulaire de contact collecte uniquement les informations nécessaires à la réponse (civilité, nom, adresse e-mail, message). Ces données ne sont ni revendues, ni transmises à des tiers, et sont conservées uniquement le temps du traitement de votre demande.
         </p>
-        <p class="text-on-surface-variant leading-relaxed">
-          Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ce droit, utilisez le <a href="index.html#contact" class="text-primary hover:underline underline-offset-4">formulaire de contact</a>.
+        <p class="text-ink-2 leading-relaxed">
+          Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ce droit, utilisez le <a href="index.html#contact" class="text-blue hover:underline underline-offset-4">formulaire de contact</a>.
         </p>
       </section>
 
       <!-- Cookies -->
       <section aria-labelledby="cookies-title">
-        <h2 id="cookies-title" class="text-xl font-headline font-bold text-on-surface mb-4 pb-3 border-b border-outline-variant/30">
+        <h2 id="cookies-title" class="font-display font-bold text-xl tracking-tighter mb-4 pb-3 border-b border-ink">
           Cookies
         </h2>
-        <p class="text-on-surface-variant leading-relaxed">
+        <p class="text-ink-2 leading-relaxed">
           Ce site n'utilise aucun cookie de tracking ou publicitaire. Des cookies techniques peuvent être déposés par l'hébergeur (Cloudflare) pour assurer le bon fonctionnement du service.
         </p>
       </section>
@@ -167,13 +127,19 @@
 
   </main>
 
-  <footer class="w-full py-12 bg-slate-50">
-    <div class="flex justify-center px-6 md:px-8 border-t border-slate-200/50 max-w-7xl mx-auto pt-12">
-      <p class="font-body text-xs uppercase tracking-widest text-slate-500">
-        © <span id="current-year">2025</span> Robin Aldasoro
-      </p>
-    </div>
+  <footer class="bg-ink text-paper px-5 md:px-10 py-10">
+    <p class="font-mono text-[11px] uppercase tracking-[.14em] text-paper/60 text-center">
+      © <span id="current-year">2025</span> Robin Aldasoro
+    </p>
   </footer>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 12H5M11 18l-6-6 6-6" />
+      </symbol>
+    </defs>
+  </svg>
 
   <script>
     document.getElementById('current-year').textContent = new Date().getFullYear();

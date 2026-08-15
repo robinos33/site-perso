@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preload" as="image" href="assets/robin-aldasoro.jpg" fetchpriority="high" />
-  <meta name="description" content="Robin Aldasoro — Développeur Full-Stack basé à Bordeaux, spécialisé dans les applications haute performance et les pratiques numériques durables." />
+  <meta name="description" content="Robin Aldasoro — Développeur Full-Stack et Tech Lead basé à Bordeaux. Applications haute performance, architecture durable, et orchestration d'agents IA au quotidien." />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://robin-aldasoro.com/" />
   <meta property="og:title" content="Robin Aldasoro — Développeur Web Full-Stack" />
-  <meta property="og:description" content="Robin Aldasoro — Développeur Full-Stack basé à Bordeaux, spécialisé dans les applications haute performance et les pratiques numériques durables." />
+  <meta property="og:description" content="Robin Aldasoro — Développeur Full-Stack et Tech Lead basé à Bordeaux. Applications haute performance, architecture durable, et orchestration d'agents IA au quotidien." />
   <meta property="og:image" content="https://robin-aldasoro.com/assets/og-img.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -20,102 +20,24 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Robin Aldasoro — Développeur Web Full-Stack" />
-  <meta name="twitter:description" content="Robin Aldasoro — Développeur Full-Stack basé à Bordeaux, spécialisé dans les applications haute performance et les pratiques numériques durables." />
+  <meta name="twitter:description" content="Robin Aldasoro — Développeur Full-Stack et Tech Lead basé à Bordeaux. Applications haute performance, architecture durable, et orchestration d'agents IA au quotidien." />
   <meta name="twitter:image" content="https://robin-aldasoro.com/assets/og-img.jpg" />
 
   <title>Robin Aldasoro — Développeur Web Full-Stack</title>
 
-  <!-- Performance: chargement asynchrone pour sortir de la critical path (LCP) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600&family=Space+Grotesk:wght@500;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'"
-  />
-  <noscript>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600&family=Space+Grotesk:wght@500;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
-    />
-  </noscript>
+  <!--
+    Polices auto-hébergées : plus de requête vers fonts.googleapis.com ni
+    fonts.gstatic.com, donc deux preconnect en moins, une dépendance tierce en
+    moins, et une CSP qui peut se refermer sur 'self'. On précharge les deux
+    fontes présentes au-dessus de la ligne de flottaison.
+    `crossorigin` est obligatoire pour les polices, même en même origine.
+  -->
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/bricolage-grotesque-600-800.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/ibm-plex-sans-400-600.woff2" crossorigin />
 
-  <!-- Tailwind CDN (remplacer par un build Tailwind en production) -->
   <link rel="stylesheet" href="assets/output.css" />
-
-  <style>
-    /* Icônes Material Symbols */
-    .material-symbols-outlined {
-      font-family: 'Material Symbols Outlined';
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      vertical-align: middle;
-      font-size: 1.25rem;
-      line-height: 1;
-      display: inline-block;
-    }
-
-    /* Liquid glass */
-    .liquid-glass {
-      background: rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    /* Lien d'évitement — RGAA critère 12.7 */
-    .skip-link {
-      position: absolute;
-      top: -100%;
-      left: 0;
-      padding: 0.5rem 1.25rem;
-      background: #006097;
-      color: #fff;
-      font-weight: 700;
-      font-family: 'Inter', sans-serif;
-      z-index: 9999;
-      transition: top 0.15s ease;
-      border-radius: 0 0 0.5rem 0;
-    }
-    .skip-link:focus {
-      top: 0;
-    }
-
-    /* Focus visible global — RGAA critère 10.7 */
-    :focus-visible {
-      outline: 3px solid #006097;
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-
-    /* @tailwindcss/forms applique outline: 2px solid transparent sur :focus (spécificité 0,1,1)
-       ce qui écrase :focus-visible (0,1,0). On rétablit le contour clavier avec la même spécificité. */
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
-      outline: 3px solid #006097;
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-
-    /* backdrop-filter sur la nav crée un contexte de composition Chromium dans lequel
-       outline peut être rendu sous la couche blurée. box-shadow est composité avec
-       l'élément lui-même et reste toujours visible. */
-    nav a:focus-visible,
-    nav button:focus-visible {
-      outline: 3px solid #006097; /* fallback Windows High Contrast */
-      outline-offset: 0;
-      border-radius: 6px;
-      box-shadow: 0 0 0 2px #fff, 0 0 0 5px #006097;
-    }
-
-    /* Champ en erreur */
-    .field-error {
-      outline: 2px solid #ba1a1a !important;
-      outline-offset: 1px;
-    }
-  </style>
 </head>
-<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<body class="bg-paper text-ink font-body antialiased selection:bg-amber selection:text-ink">
 
   <!-- Lien d'évitement (RGAA 12.7) -->
   <a href="#contenu-principal" class="skip-link">Aller au contenu principal</a>
@@ -123,15 +45,15 @@
   <!-- ═══════════════════════════════════════════════════════════ EN-TÊTE / NAV -->
   <header>
     <nav
-      class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl shadow-sm"
+      class="fixed top-0 w-full z-50 bg-paper border-b border-ink"
       aria-label="Navigation principale"
     >
-      <div class="flex justify-between items-center px-6 md:px-8 py-4 max-w-7xl mx-auto">
+      <div class="flex justify-between items-center gap-6 px-5 md:px-10 py-3">
 
         <!-- Logo / nom -->
         <a
           href="#hero"
-          class="text-xl font-headline font-bold tracking-tighter text-on-surface"
+          class="font-display font-extrabold text-lg tracking-tighter text-ink shrink-0"
           aria-label="Robin Aldasoro — retour à l'accueil"
         >
           Robin Aldasoro
@@ -139,20 +61,21 @@
 
         <!-- Navigation desktop -->
         <ul
-          class="hidden md:flex space-x-8 items-center font-headline text-sm tracking-tight font-medium list-none m-0 p-0"
+          class="hidden lg:flex items-center gap-7 text-sm list-none m-0 p-0"
           role="list"
         >
-          <li><a id="nav-hero"       href="#hero"       class="text-primary font-bold border-b-2 border-primary" aria-current="page">Accueil</a></li>
-          <li><a id="nav-skills"     href="#skills"     class="text-on-surface-variant hover:text-primary transition-colors">Compétences</a></li>
-          <li><a id="nav-experience" href="#experience" class="text-on-surface-variant hover:text-primary transition-colors">Expérience</a></li>
-          <li><a id="nav-lectures"   href="#lectures"   class="text-on-surface-variant hover:text-primary transition-colors">Lectures</a></li>
-          <li><a id="nav-contact"    href="#contact"    class="text-on-surface-variant hover:text-primary transition-colors">Contact</a></li>
+          <li><a id="nav-hero"       href="#hero"       class="text-blue font-medium" aria-current="page">Accueil</a></li>
+          <li><a id="nav-skills"     href="#skills"     class="text-ink-2 hover:text-blue transition-colors">Compétences</a></li>
+          <li><a id="nav-ia"         href="#ia"         class="text-ink-2 hover:text-blue transition-colors">IA agentique</a></li>
+          <li><a id="nav-experience" href="#experience" class="text-ink-2 hover:text-blue transition-colors">Expérience</a></li>
+          <li><a id="nav-lectures"   href="#lectures"   class="text-ink-2 hover:text-blue transition-colors">Lectures</a></li>
+          <li><a id="nav-contact"    href="#contact"    class="text-ink-2 hover:text-blue transition-colors">Contact</a></li>
         </ul>
 
         <!-- CTA desktop -->
         <a
           href="#contact"
-          class="hidden md:inline-flex items-center bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2.5 rounded-full font-headline font-medium shadow-lg hover:scale-105 transition-transform duration-200"
+          class="hidden lg:inline-flex items-center bg-blue text-white px-5 py-2.5 text-sm font-medium hover:bg-blue-deep transition-colors shrink-0"
         >
           Me contacter
         </a>
@@ -161,32 +84,31 @@
         <button
           id="menu-btn"
           type="button"
-          class="md:hidden text-on-surface p-2 rounded-lg"
+          class="lg:hidden text-ink p-2 -mr-2"
           aria-expanded="false"
           aria-controls="mobile-menu"
           aria-label="Ouvrir le menu de navigation"
         >
-          <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+          <svg id="menu-icon" class="w-6 h-6" aria-hidden="true"><use href="#i-menu" /></svg>
         </button>
       </div>
 
       <!-- Menu mobile -->
       <div
         id="mobile-menu"
-        class="md:hidden hidden bg-white/95 backdrop-blur-xl border-t border-outline-variant/20"
+        class="lg:hidden hidden bg-paper border-t border-rule"
         role="region"
         aria-label="Menu mobile"
       >
-        <ul class="flex flex-col px-8 py-6 space-y-4 font-headline list-none m-0 p-0 px-8 py-6" role="list">
-          <li><a href="#hero"       class="block py-2 text-primary font-bold"                                    aria-current="page">Accueil</a></li>
-          <li><a href="#skills"     class="block py-2 text-on-surface-variant hover:text-primary transition-colors">Compétences</a></li>
-          <li><a href="#experience" class="block py-2 text-on-surface-variant hover:text-primary transition-colors">Expérience</a></li>
-          <li><a href="#contact"    class="block py-2 text-on-surface-variant hover:text-primary transition-colors">Contact</a></li>
-          <li>
-            <a
-              href="#contact"
-              class="inline-block bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-3 rounded-full font-medium mt-2"
-            >
+        <ul class="flex flex-col px-5 py-5 gap-1 list-none m-0" role="list">
+          <li><a href="#hero"       class="block py-2 text-blue font-medium" aria-current="page">Accueil</a></li>
+          <li><a href="#skills"     class="block py-2 text-ink-2 hover:text-blue transition-colors">Compétences</a></li>
+          <li><a href="#ia"         class="block py-2 text-ink-2 hover:text-blue transition-colors">IA agentique</a></li>
+          <li><a href="#experience" class="block py-2 text-ink-2 hover:text-blue transition-colors">Expérience</a></li>
+          <li><a href="#lectures"   class="block py-2 text-ink-2 hover:text-blue transition-colors">Lectures</a></li>
+          <li><a href="#contact"    class="block py-2 text-ink-2 hover:text-blue transition-colors">Contact</a></li>
+          <li class="pt-3">
+            <a href="#contact" class="inline-flex bg-blue text-white px-5 py-3 font-medium">
               Me contacter
             </a>
           </li>
@@ -201,272 +123,351 @@
     <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
     <section
       id="hero"
-      class="pt-32 pb-20 px-6 md:px-8 max-w-7xl mx-auto min-h-screen flex flex-col md:flex-row items-center gap-16"
+      class="pt-14 border-b border-ink"
       aria-labelledby="hero-title"
     >
-      <div class="w-full md:w-1/2 space-y-8">
-        <div class="space-y-4">
-          <p class="font-label text-primary font-semibold uppercase tracking-widest text-xs">
-            Développeur Full-Stack / Tech Lead
+      <div class="grid grid-cols-1 md:grid-cols-[1.35fr_1fr]">
+
+        <!-- Colonne texte -->
+        <div class="px-5 md:px-10 py-12 md:py-16 md:border-r border-rule">
+
+          <p class="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[.11em] text-ink-2 mb-6">
+            <span class="bg-blue text-white px-2.5 py-1 tracking-[.08em]">Power user IA agentique</span>
+            <span>Développeur Full-Stack / Tech Lead</span>
           </p>
+
           <h1
             id="hero-title"
-            class="text-4xl md:text-6xl font-headline font-bold text-on-surface tracking-tight leading-[1.1]"
+            class="font-display font-extrabold text-[2.5rem] sm:text-6xl leading-[.96] tracking-tightest text-balance"
           >
-            La tech qui avance <span class="text-primary">dans la bonne direction</span> — et dans les temps.
+            La tech qui avance <span class="hl-amber">dans la bonne direction</span> <span class="text-blue">— et dans les temps.</span>
           </h1>
-        </div>
-        <p class="text-xl text-on-surface-variant leading-relaxed max-w-xl">
-          Je suis Robin Aldasoro, développeur et tech lead — responsable du <em>comment</em> et du <em>quand</em> d'un projet. Je crée des applications haute performance avec un focus sur l'excellence technique, la maintenabilité et les jeux de mots. J'apprécie particulièrement le travail en équipe et le contact humain au quotidien.
-        </p>
-        <div class="flex flex-wrap gap-4 pt-4">
-          <a
-            href="#experience"
-            class="bg-primary text-on-primary px-8 py-4 rounded-full font-headline font-bold inline-flex items-center gap-2 hover:shadow-xl transition-all"
-          >
-            Voir mon travail
-            <span class="material-symbols-outlined" aria-hidden="true">arrow_downward</span>
-          </a>
-          <a
-            href="#skills"
-            class="bg-surface-container-high text-primary px-8 py-4 rounded-full font-headline font-bold hover:bg-surface-container-highest transition-colors"
-          >
-            Stack technique
-          </a>
-        </div>
-      </div>
 
-      <div class="w-full md:w-1/2 relative">
-        <!-- Lueur décorative (aria-hidden car purement décorative) -->
-        <div
-          class="absolute -inset-4 bg-primary-fixed opacity-20 blur-3xl rounded-full"
-          aria-hidden="true"
-        ></div>
+          <p class="text-base md:text-lg leading-relaxed text-ink-2 max-w-[54ch] mt-7">
+            Je suis Robin Aldasoro, développeur et tech lead — responsable du <em>comment</em> et du <em>quand</em> d'un projet. Je crée des applications haute performance avec un focus sur l'excellence technique, la maintenabilité et les jeux de mots. J'apprécie particulièrement le travail en équipe et le contact humain au quotidien : en full remote, je finis par m'éteindre telle une lambda serverless.
+          </p>
 
-        <div class="relative rounded-3xl overflow-hidden aspect-[4/5] shadow-2xl">
+          <p class="bg-ink text-paper px-5 py-4 max-w-[54ch] mt-6 leading-relaxed">
+            Et je ne travaille plus seul : <b class="text-amber font-medium">j'orchestre des agents.</b> Claude Code, MCP, sous-agents, hooks. Ils ne prennent jamais de pause café — en revanche ils réclament beaucoup de contexte.
+          </p>
+
+          <div class="flex flex-wrap gap-3 mt-8">
+            <a
+              href="#experience"
+              class="bg-blue text-white px-6 py-3.5 font-medium inline-flex items-center gap-2 hover:bg-blue-deep transition-colors"
+            >
+              Voir mon travail
+              <svg class="w-4 h-4" aria-hidden="true"><use href="#i-arrow-down" /></svg>
+            </a>
+            <a
+              href="#ia"
+              class="border border-ink text-ink px-6 py-3.5 font-medium hover:bg-ink hover:text-paper transition-colors"
+            >
+              Comment je bosse avec l'IA
+            </a>
+          </div>
+        </div>
+
+        <!-- Colonne portrait — le duotone est porté par le conteneur (voir input.css) -->
+        <div class="relative duotone min-h-[380px] md:min-h-0 order-first md:order-none">
           <img
             id="hero-photo"
             src="assets/robin-aldasoro.jpg"
             alt="Portrait de Robin Aldasoro, développeur web"
-            class="w-full h-full object-cover transition-opacity duration-300"
+            class="absolute inset-0 w-full h-full object-cover object-[50%_20%] transition-opacity duration-300"
             loading="eager"
             fetchpriority="high"
             width="800"
             height="1120"
             decoding="async"
           />
+          <p class="absolute left-0 bottom-0 bg-amber text-ink flex items-baseline gap-2.5 px-4 py-3">
+            <b class="font-display font-extrabold text-2xl tracking-tighter tabular-nums">15+</b>
+            <span class="font-mono text-[10px] uppercase tracking-[.1em]">ans d'expérience</span>
+          </p>
         </div>
 
-        <!-- Badge expérience (décoratif) -->
-        <div
-          class="absolute -bottom-6 -right-6 liquid-glass p-6 rounded-2xl shadow-xl max-w-[200px]"
-          aria-hidden="true"
-        >
-          <div class="flex items-center gap-4">
-            <div class="h-12 w-12 bg-primary-container rounded-full flex items-center justify-center text-on-primary">
-              <span class="material-symbols-outlined">code</span>
-            </div>
-            <div>
-              <p class="font-headline font-bold text-lg leading-none">15+</p>
-              <p class="font-label text-xs text-on-surface-variant">Ans d'expérience</p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
     <!-- ── COMPÉTENCES ───────────────────────────────────────────────────────── -->
     <section
       id="skills"
-      class="py-24 bg-surface-container-low"
+      class="px-5 md:px-10 py-16 md:py-20"
       aria-labelledby="skills-title"
     >
-      <div class="max-w-7xl mx-auto px-6 md:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-          <div class="max-w-2xl">
-            <h2 id="skills-title" class="text-4xl font-headline font-bold text-on-surface mb-4">
-              Compétences techniques
-            </h2>
-            <p class="text-on-surface-variant text-lg">
-              La bonne technologie est souvent la plus simple. J'adapte la stack au besoin, sans over-engineering.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-          <!-- Backend -->
-          <article class="liquid-glass p-8 rounded-[2rem] hover:bg-surface-container-highest transition-all duration-300 group">
-            <div
-              class="h-14 w-14 bg-primary rounded-2xl flex items-center justify-center text-on-primary mb-8 group-hover:scale-110 transition-transform"
-              aria-hidden="true"
-            >
-              <span class="material-symbols-outlined text-3xl">terminal</span>
-            </div>
-            <h3 class="text-2xl font-headline font-bold mb-4">Maîtrise Backend</h3>
-            <p class="text-on-surface-variant mb-6">
-              Expertise dans la création de logique serveur robuste et la gestion d'architectures de bases de données complexes.
-            </p>
-            <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies backend">
-              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">PHP / Symfony</span></li>
-              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">Node.js</span></li>
-              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">MySQL</span></li>
-              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">PostgreSQL</span></li>
-              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">MongoDB</span></li>
-              <li><span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-label">Redis</span></li>
-            </ul>
-          </article>
-
-          <!-- Frontend -->
-          <article class="liquid-glass p-8 rounded-[2rem] hover:bg-surface-container-highest transition-all duration-300 group">
-            <div
-              class="h-14 w-14 bg-tertiary-container rounded-2xl flex items-center justify-center text-on-tertiary mb-8 group-hover:scale-110 transition-transform"
-              aria-hidden="true"
-            >
-              <span class="material-symbols-outlined text-3xl">web</span>
-            </div>
-            <h3 class="text-2xl font-headline font-bold mb-4">Excellence Frontend</h3>
-            <p class="text-on-surface-variant mb-6">
-              Je m'appuie sur les capacités natives des navigateurs avant tout recours à une bibliothèque — moins de code, plus de durabilité.
-            </p>
-            <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies frontend">
-              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">HTML5 / CSS3</span></li>
-              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Vanilla JS</span></li>
-              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Angular</span></li>
-              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Tailwind</span></li>
-              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Turbo</span></li>
-              <li><span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label">Stimulus</span></li>
-            </ul>
-          </article>
-
-          <!-- Systèmes -->
-          <article class="liquid-glass p-8 rounded-[2rem] hover:bg-surface-container-highest transition-all duration-300 group">
-            <div
-              class="h-14 w-14 bg-secondary-container rounded-2xl flex items-center justify-center text-on-secondary-container mb-8 group-hover:scale-110 transition-transform"
-              aria-hidden="true"
-            >
-              <span class="material-symbols-outlined text-3xl">architecture</span>
-            </div>
-            <h3 class="text-2xl font-headline font-bold mb-4">Architecture Systèmes</h3>
-            <p class="text-on-surface-variant mb-6">
-              Des architectures résilientes, dimensionnées au besoin réel — ni plus, ni moins. KISS et YAGNI comme boussole.
-            </p>
-            <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies systèmes">
-              <li><span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-label">REST</span></li>
-              <li><span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-label">Docker</span></li>
-              <li><span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-label">GitLab CI</span></li>
-              <li><span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-label">GitHub Actions</span></li>
-            </ul>
-          </article>
-
-        </div>
+      <div class="grid md:grid-cols-[1.4fr_1fr] gap-6 md:gap-10 items-end mb-9">
+        <h2 id="skills-title" class="font-display font-extrabold text-3xl md:text-[2.5rem] leading-[.98] tracking-tighter text-balance">
+          Compétences techniques
+        </h2>
+        <p class="text-ink-2 leading-relaxed">
+          La bonne technologie est souvent la plus simple. J'adapte la stack au besoin, sans over-engineering.
+        </p>
       </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-ink border border-ink">
+
+        <!-- Backend -->
+        <article class="bg-paper p-6 md:p-7">
+          <span class="block font-mono text-[10.5px] uppercase tracking-[.1em] text-blue mb-3">01 / Backend</span>
+          <h3 class="font-display font-bold text-xl tracking-tighter mb-2">Maîtrise Backend</h3>
+          <p class="text-sm text-ink-2 leading-relaxed mb-5">
+            Expertise dans la création de logique serveur robuste et la gestion d'architectures de bases de données complexes.
+          </p>
+          <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0" aria-label="Technologies backend">
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">PHP / Symfony</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Node.js</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">MySQL</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">PostgreSQL</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">MongoDB</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Redis</span></li>
+          </ul>
+        </article>
+
+        <!-- Frontend -->
+        <article class="bg-paper p-6 md:p-7">
+          <span class="block font-mono text-[10.5px] uppercase tracking-[.1em] text-blue mb-3">02 / Frontend</span>
+          <h3 class="font-display font-bold text-xl tracking-tighter mb-2">Excellence Frontend</h3>
+          <p class="text-sm text-ink-2 leading-relaxed mb-5">
+            Je m'appuie sur les capacités natives des navigateurs avant tout recours à une bibliothèque — moins de code, plus de durabilité.
+          </p>
+          <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0" aria-label="Technologies frontend">
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">HTML5 / CSS3</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Vanilla JS</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Angular</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Tailwind</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Turbo</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Stimulus</span></li>
+          </ul>
+        </article>
+
+        <!-- Systèmes -->
+        <article class="bg-paper p-6 md:p-7">
+          <span class="block font-mono text-[10.5px] uppercase tracking-[.1em] text-blue mb-3">03 / Systèmes</span>
+          <h3 class="font-display font-bold text-xl tracking-tighter mb-2">Architecture Systèmes</h3>
+          <p class="text-sm text-ink-2 leading-relaxed mb-5">
+            Des architectures résilientes, dimensionnées au besoin réel — ni plus, ni moins. KISS et YAGNI comme boussole.
+          </p>
+          <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0" aria-label="Technologies systèmes">
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">REST</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Docker</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">GitLab CI</span></li>
+            <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">GitHub Actions</span></li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ── IA AGENTIQUE ──────────────────────────────────────────────────────── -->
+    <section
+      id="ia"
+      class="px-5 md:px-10 py-16 md:py-20 bg-paper-alt border-y border-ink"
+      aria-labelledby="ia-title"
+    >
+      <div class="grid md:grid-cols-[1.4fr_1fr] gap-6 md:gap-10 items-end mb-9">
+        <div>
+          <p class="font-mono text-[10.5px] uppercase tracking-[.11em] text-blue mb-3">IA agentique</p>
+          <h2 id="ia-title" class="font-display font-extrabold text-3xl md:text-[2.5rem] leading-[.98] tracking-tighter text-balance">
+            Une équipe d'agents,<br class="hidden sm:inline" /> un seul responsable.
+          </h2>
+        </div>
+        <p class="text-ink-2 leading-relaxed">
+          Le schéma ci-dessous n'est pas une illustration : c'est la boucle réelle. Je découpe, je distribue le contexte, les agents travaillent en parallèle — et rien ne part en production sans passer par ma relecture.
+        </p>
+      </div>
+
+      <!-- Schéma d'orchestration.
+           L'attribut role="img" + aria-label donne aux lecteurs d'écran
+           l'équivalent textuel complet du parcours décrit graphiquement. -->
+      <div class="border border-ink bg-white p-4 md:p-6 overflow-x-auto">
+        <svg
+          viewBox="0 0 900 220"
+          class="block w-full h-auto min-w-[620px] max-w-[900px] mx-auto"
+          role="img"
+          aria-label="Schéma du flux de travail : le besoin utilisateur alimente une étape de cadrage assurée par Robin, qui distribue le travail à quatre agents en parallèle — explorer, écrire, tester et documenter. Leurs résultats sont rassemblés et passent par une revue humaine avant d'atteindre la production."
+        >
+          <!-- Liaisons : un tracé continu atténué, doublé d'un tracé pointillé animé
+               qui matérialise le sens de circulation. -->
+          <g fill="none" stroke="#dedcd6" stroke-width="1.5">
+            <path d="M118 110 H188" />
+            <path d="M300 110 H340 M340 32 V188 M340 32 H392 M340 84 H392 M340 136 H392 M340 188 H392" />
+            <path d="M528 32 H568 M528 84 H568 M528 136 H568 M528 188 H568 M568 32 V188 M568 110 H616" />
+            <path d="M728 110 H786" />
+          </g>
+          <g fill="none" stroke="#2540ff" stroke-width="1.5" class="flow-pulse">
+            <path d="M118 110 H188" />
+            <path d="M300 110 H340 M340 110 V32 H392 M340 110 V84 H392 M340 110 V136 H392 M340 110 V188 H392" />
+            <path d="M528 32 H568 V110 M528 188 H568 V110 M568 110 H616" />
+            <path d="M728 110 H786" />
+          </g>
+
+          <!-- Besoin utilisateur -->
+          <rect x="8" y="88" width="110" height="44" fill="none" stroke="#101014" stroke-width="1.5" />
+          <text x="63" y="106" text-anchor="middle" fill="#101014" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">BESOIN</text>
+          <text x="63" y="120" text-anchor="middle" fill="#5b5b63" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">UTILISATEUR</text>
+
+          <!-- Cadrage -->
+          <rect x="188" y="86" width="112" height="48" fill="#101014" />
+          <text x="244" y="104" text-anchor="middle" fill="#ffffff" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">CADRAGE</text>
+          <text x="244" y="118" text-anchor="middle" fill="#ffffff" fill-opacity=".65" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">ROBIN</text>
+
+          <!-- Agents -->
+          <rect x="392" y="14"  width="136" height="36" fill="#ffcf3d" />
+          <text x="404" y="36"  fill="#101014" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">AGENT · EXPLORER</text>
+          <rect x="392" y="66"  width="136" height="36" fill="#ffcf3d" />
+          <text x="404" y="88"  fill="#101014" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">AGENT · ÉCRIRE</text>
+          <rect x="392" y="118" width="136" height="36" fill="#ffcf3d" />
+          <text x="404" y="140" fill="#101014" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">AGENT · TESTER</text>
+          <rect x="392" y="170" width="136" height="36" fill="#ffcf3d" />
+          <text x="404" y="192" fill="#101014" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">AGENT · DOCUMENTER</text>
+
+          <!-- Revue humaine -->
+          <rect x="616" y="86" width="112" height="48" fill="#2540ff" />
+          <text x="672" y="104" text-anchor="middle" fill="#ffffff" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">REVUE</text>
+          <text x="672" y="118" text-anchor="middle" fill="#ffffff" fill-opacity=".7" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">HUMAINE</text>
+
+          <!-- Production -->
+          <rect x="786" y="88" width="106" height="44" fill="none" stroke="#101014" stroke-width="1.5" />
+          <text x="839" y="106" text-anchor="middle" fill="#101014" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">PRODUCTION</text>
+          <text x="839" y="120" text-anchor="middle" fill="#5b5b63" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".06em">ADOPTÉE</text>
+        </svg>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-ink border border-ink border-t-0">
+        <article class="bg-paper-alt p-6 md:p-7">
+          <span class="block font-mono text-[10.5px] uppercase tracking-[.1em] text-blue mb-3">01 / Orchestrer</span>
+          <h3 class="font-display font-bold text-xl tracking-tighter mb-2">Des agents, pas un chatbot</h3>
+          <p class="text-sm text-ink-2 leading-relaxed">
+            Claude Code, serveurs MCP, sous-agents spécialisés, hooks, workflows sur mesure. Le travail est découpé, distribué, exécuté en parallèle.
+          </p>
+        </article>
+        <article class="bg-paper-alt p-6 md:p-7">
+          <span class="block font-mono text-[10.5px] uppercase tracking-[.1em] text-blue mb-3">02 / Intégrer</span>
+          <h3 class="font-display font-bold text-xl tracking-tighter mb-2">Branché sur le vrai pipeline</h3>
+          <p class="text-sm text-ink-2 leading-relaxed">
+            Génération, revue de code, tests, documentation, CI. Pas une démo de conférence : de la production, avec les mêmes exigences qu'avant.
+          </p>
+        </article>
+        <article class="bg-paper-alt p-6 md:p-7">
+          <span class="block font-mono text-[10.5px] uppercase tracking-[.1em] text-blue mb-3">03 / Arbitrer</span>
+          <h3 class="font-display font-bold text-xl tracking-tighter mb-2">Savoir quand l'éteindre</h3>
+          <p class="text-sm text-ink-2 leading-relaxed">
+            KISS et YAGNI s'appliquent aussi aux agents. Le plus dur n'est pas de faire tourner l'IA — c'est de reconnaître les moments où elle n'apporte rien.
+          </p>
+        </article>
+      </div>
+
+      <p class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 border border-rule bg-white px-5 py-4 mt-6">
+        <span class="font-mono text-[10.5px] uppercase tracking-[.1em] text-blue whitespace-nowrap">Ligne directrice</span>
+        <em class="text-ink-2">« La meilleure solution technique, c'est celle que l'utilisateur adopte sans y penser. »</em>
+      </p>
     </section>
 
     <!-- ── EXPÉRIENCE ────────────────────────────────────────────────────────── -->
     <section
       id="experience"
-      class="py-24 max-w-7xl mx-auto px-6 md:px-8"
+      class="px-5 md:px-10 py-16 md:py-20"
       aria-labelledby="experience-title"
     >
-      <h2 id="experience-title" class="text-4xl font-headline font-bold text-on-surface mb-16">
+      <h2 id="experience-title" class="font-display font-extrabold text-3xl md:text-[2.5rem] leading-[.98] tracking-tighter mb-10">
         Parcours professionnel
       </h2>
 
-      <ol class="space-y-12 list-none m-0 p-0" aria-label="Expériences professionnelles">
+      <ol class="list-none m-0 p-0 border-t border-ink" aria-label="Expériences professionnelles">
 
         <!-- Hellowork -->
-        <li class="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
-          <div class="md:w-1/4 md:sticky md:top-32">
-            <time class="font-label text-primary font-bold text-lg" datetime="2021">
+        <li class="grid md:grid-cols-[200px_1fr] gap-4 md:gap-10 py-9 border-b border-rule">
+          <div class="md:sticky md:top-24 md:self-start">
+            <time class="font-mono text-sm font-medium text-blue tabular-nums" datetime="2021">
               2021 — Présent
             </time>
           </div>
-          <div class="md:w-3/4 pb-12 border-b border-outline-variant/30">
-            <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Senior Software Engineer / Tech Lead</h3>
-            <p class="text-lg font-medium text-primary mb-4">
-              <a href="https://www.hellowork-group.com" target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-4">Hellowork<span class="sr-only"> (nouvel onglet)</span></a>
-              <span class="text-sm font-label text-on-surface-variant font-normal">— CDI</span>
+          <div>
+            <h3 class="font-display font-bold text-xl md:text-2xl tracking-tighter mb-1">Senior Software Engineer / Tech Lead</h3>
+            <p class="font-medium mb-5">
+              <a href="https://www.hellowork-group.com" target="_blank" rel="noopener noreferrer" class="text-blue hover:underline underline-offset-4">Hellowork<span class="sr-only"> (nouvel onglet)</span></a>
+              <span class="font-mono text-xs text-ink-2 font-normal">— CDI</span>
             </p>
-            <h4 class="text-sm font-label font-semibold text-on-surface-variant uppercase tracking-widest mb-2">Smartforum</h4>
-            <p class="text-on-surface-variant leading-relaxed max-w-3xl mb-6">
+            <h4 class="font-mono text-[10.5px] font-medium text-ink-2 uppercase tracking-[.11em] mb-2">Smartforum</h4>
+            <p class="text-ink-2 leading-relaxed max-w-[68ch] mb-5">
               Développement d'une plateforme SaaS de recrutement en marque blanche, d'abord en tant que Software Engineer puis Tech Lead. À ce titre : gestion de la roadmap technique de l'équipe, priorisation des sujets de l'équipe, décisions d'architecture, organisation de pentests et montée en compétences des développeurs. <em>Et quelque part en chemin, une histoire d'amour avec la clean architecture héritée du Domain Driven Design (DDD).</em>
             </p>
-            <h4 class="text-sm font-label font-semibold text-on-surface-variant uppercase tracking-widest mb-2">Basile</h4>
-            <p class="text-on-surface-variant leading-relaxed max-w-3xl mb-6">
+            <h4 class="font-mono text-[10.5px] font-medium text-ink-2 uppercase tracking-[.11em] mb-2">Basile</h4>
+            <p class="text-ink-2 leading-relaxed max-w-[68ch] mb-5">
               Contributions en tant que développeur sur une solution de cooptation RH.
             </p>
-            <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies utilisées">
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Symfony</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Stimulus / Turbo</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Elasticsearch</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">MongoDB</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Docker</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">GitLab CI</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">DDD</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">FrankenPHP</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Kubernetes</span></li>
+            <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0" aria-label="Technologies utilisées">
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Symfony</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Stimulus / Turbo</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Elasticsearch</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">MongoDB</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Docker</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">GitLab CI</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">DDD</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">FrankenPHP</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Kubernetes</span></li>
             </ul>
           </div>
         </li>
 
         <!-- Onepoint -->
-        <li class="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
-          <div class="md:w-1/4 md:sticky md:top-32">
-            <time class="font-label text-on-surface-variant/80 font-bold text-lg" datetime="2016">
+        <li class="grid md:grid-cols-[200px_1fr] gap-4 md:gap-10 py-9 border-b border-rule">
+          <div class="md:sticky md:top-24 md:self-start">
+            <time class="font-mono text-sm font-medium text-ink-2 tabular-nums" datetime="2016">
               2016 — 2021
             </time>
           </div>
-          <div class="md:w-3/4 pb-12 border-b border-outline-variant/30">
-            <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Ingénieur Développeur</h3>
-            <p class="text-lg font-medium text-primary mb-4">
-              <a href="https://www.groupeonepoint.com" target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-4">Onepoint<span class="sr-only"> (nouvel onglet)</span></a>
-              <span class="text-sm font-label text-on-surface-variant font-normal">— CDI</span>
+          <div>
+            <h3 class="font-display font-bold text-xl md:text-2xl tracking-tighter mb-1">Ingénieur Développeur</h3>
+            <p class="font-medium mb-5">
+              <a href="https://www.groupeonepoint.com" target="_blank" rel="noopener noreferrer" class="text-blue hover:underline underline-offset-4">Onepoint<span class="sr-only"> (nouvel onglet)</span></a>
+              <span class="font-mono text-xs text-ink-2 font-normal">— CDI</span>
             </p>
-            <p class="text-on-surface-variant leading-relaxed max-w-3xl mb-6">
+            <p class="text-ink-2 leading-relaxed max-w-[68ch] mb-5">
               Moins de clients mais davantage de responsabilités : principalement un site multipays et multilingue pour PSA. Au-delà du développement, implication en conception, architecture, administration système, coaching, ateliers UX et avant-vente. Participation également à la rédaction et à la réalisation d'une webTV interne en direct.
             </p>
-            <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies utilisées">
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Symfony</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Angular</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Ansible</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">MySQL</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">WordPress</span></li>
+            <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0" aria-label="Technologies utilisées">
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Symfony</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Angular</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Ansible</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">MySQL</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">WordPress</span></li>
             </ul>
           </div>
         </li>
 
         <!-- SQLI + Freelance (période chevauchante) -->
-        <li class="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
-          <div class="md:w-1/4 md:sticky md:top-32">
-            <time class="font-label text-on-surface-variant/80 font-bold text-lg" datetime="2012">
+        <li class="grid md:grid-cols-[200px_1fr] gap-4 md:gap-10 py-9 border-b border-rule">
+          <div class="md:sticky md:top-24 md:self-start">
+            <time class="font-mono text-sm font-medium text-ink-2 tabular-nums" datetime="2012">
               2012 — 2016
             </time>
           </div>
-          <div class="md:w-3/4 pb-12 border-b border-outline-variant/30 space-y-8">
+          <div class="space-y-8">
             <!-- SQLI -->
             <div>
-              <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Concepteur Développeur</h3>
-              <p class="text-lg font-medium text-primary mb-4">
-                <a href="https://www.sqli.com" target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-4">SQLI<span class="sr-only"> (nouvel onglet)</span></a>
-                <span class="text-sm font-label text-on-surface-variant font-normal">— CDI</span>
+              <h3 class="font-display font-bold text-xl md:text-2xl tracking-tighter mb-1">Concepteur Développeur</h3>
+              <p class="font-medium mb-5">
+                <a href="https://www.sqli.com" target="_blank" rel="noopener noreferrer" class="text-blue hover:underline underline-offset-4">SQLI<span class="sr-only"> (nouvel onglet)</span></a>
+                <span class="font-mono text-xs text-ink-2 font-normal">— CDI</span>
               </p>
-              <p class="text-on-surface-variant leading-relaxed max-w-3xl mb-6">
+              <p class="text-ink-2 leading-relaxed max-w-[68ch] mb-5">
                 Premiers projets agile en environnement grands comptes (RTE, Dekra, Conseil Général Charente-Maritime, Région Aquitaine). Développement d'applications métier complexes avec une stack PHP mature.
               </p>
-              <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies utilisées">
-                <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Zend Framework</span></li>
-                <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Symfony 1</span></li>
-                <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">PHP 5</span></li>
-                <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">PostgreSQL</span></li>
-                <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">MySQL</span></li>
+              <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0" aria-label="Technologies utilisées">
+                <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Zend Framework</span></li>
+                <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Symfony 1</span></li>
+                <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">PHP 5</span></li>
+                <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">PostgreSQL</span></li>
+                <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">MySQL</span></li>
               </ul>
             </div>
             <!-- Freelance -->
             <div>
-              <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Développeur Freelance</h3>
-              <p class="text-lg font-medium text-primary mb-4">Indépendant <span class="text-sm font-label text-on-surface-variant font-normal">— 2012–2015</span></p>
-              <p class="text-on-surface-variant leading-relaxed max-w-3xl mb-6">
+              <h3 class="font-display font-bold text-xl md:text-2xl tracking-tighter mb-1">Développeur Freelance</h3>
+              <p class="font-medium mb-5">Indépendant <span class="font-mono text-xs text-ink-2 font-normal">— 2012–2015</span></p>
+              <p class="text-ink-2 leading-relaxed max-w-[68ch]">
                 Intégrations Prestashop et WordPress pour diverses TPE.
               </p>
             </div>
@@ -474,24 +475,24 @@
         </li>
 
         <!-- Hubmasters -->
-        <li class="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
-          <div class="md:w-1/4 md:sticky md:top-32">
-            <time class="font-label text-on-surface-variant/80 font-bold text-lg" datetime="2010">
+        <li class="grid md:grid-cols-[200px_1fr] gap-4 md:gap-10 py-9">
+          <div class="md:sticky md:top-24 md:self-start">
+            <time class="font-mono text-sm font-medium text-ink-2 tabular-nums" datetime="2010">
               2010 — 2012
             </time>
           </div>
-          <div class="md:w-3/4 pb-12">
-            <h3 class="text-2xl font-headline font-bold text-on-surface mb-2">Développeur Web</h3>
-            <p class="text-lg font-medium text-primary mb-4">Hubmasters <span class="text-sm font-label text-on-surface-variant font-normal">— Agence de communication · Contrat Pro</span></p>
-            <p class="text-on-surface-variant leading-relaxed max-w-3xl mb-6">
+          <div>
+            <h3 class="font-display font-bold text-xl md:text-2xl tracking-tighter mb-1">Développeur Web</h3>
+            <p class="font-medium mb-5">Hubmasters <span class="font-mono text-xs text-ink-2 font-normal">— Agence de communication · Contrat Pro</span></p>
+            <p class="text-ink-2 leading-relaxed max-w-[68ch] mb-5">
               Entrée dans le métier en autodidacte, sans diplôme. Intégrations CMS (Joomla, WordPress, Prestashop) et développement from scratch d'un réseau social centré autour de la gastronomie.
             </p>
-            <ul class="flex flex-wrap gap-2 list-none m-0 p-0" aria-label="Technologies utilisées">
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">PHP 5</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">jQuery</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">WordPress</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Joomla</span></li>
-              <li><span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-label">Prestashop</span></li>
+            <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0" aria-label="Technologies utilisées">
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">PHP 5</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">jQuery</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">WordPress</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Joomla</span></li>
+              <li><span class="border border-rule px-2.5 py-1 font-mono text-[11px] text-ink-2">Prestashop</span></li>
             </ul>
           </div>
         </li>
@@ -502,251 +503,240 @@
     <!-- ── LECTURES ─────────────────────────────────────────────────────────── -->
     <section
       id="lectures"
-      class="py-24 bg-surface-container-low"
+      class="px-5 md:px-10 py-16 md:py-20 bg-paper-alt border-y border-ink"
       aria-labelledby="lectures-title"
     >
-      <div class="max-w-7xl mx-auto px-6 md:px-8">
-      <h2 id="lectures-title" class="text-4xl font-headline font-bold text-on-surface mb-4">
+      <h2 id="lectures-title" class="font-display font-extrabold text-3xl md:text-[2.5rem] leading-[.98] tracking-tighter mb-3">
         Lectures
       </h2>
-      <p class="text-on-surface-variant mb-12 max-w-xl">
+      <p class="text-ink-2 mb-9 max-w-[60ch]">
         Tech ou pas tech — des livres qui ont façonné ma façon de penser et de travailler.
       </p>
 
+      <!-- `overflow-hidden` est nécessaire : sans lui, la largeur de défilement de
+           la liste ci-dessous remonte jusqu'au document et provoque un
+           défilement horizontal de toute la page sur mobile. -->
       <div class="relative overflow-hidden">
-        <div class="absolute right-0 top-0 bottom-4 w-16 bg-gradient-to-l from-[#e6f6ff] to-transparent pointer-events-none z-10 md:hidden" aria-hidden="true"></div>
+        <div class="absolute right-0 top-0 bottom-4 w-16 bg-gradient-to-l from-paper-alt to-transparent pointer-events-none z-10 md:hidden" aria-hidden="true"></div>
         <ul
-          class="flex gap-6 overflow-x-auto flex-nowrap md:flex-wrap pb-4 md:pb-0 list-none m-0 p-0"
+          class="flex gap-5 overflow-x-auto flex-nowrap md:flex-wrap pb-4 md:pb-0 list-none m-0 p-0"
           style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;"
           aria-label="Lectures recommandées"
         >
           <li style="flex: 0 0 140px; scroll-snap-align: start;">
             <a href="https://www.fnac.com/SearchResult/ResultList.aspx?SCat=2!1&Search=Domain+Driven+Design+Evans" target="_blank" rel="noopener noreferrer" class="group block">
-              <img src="https://covers.openlibrary.org/b/isbn/9780321125217-M.jpg" alt="Couverture : Domain-Driven Design" class="w-full rounded-lg shadow-md mb-3 bg-surface-container-high" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
-              <span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Domain-Driven Design<span class="sr-only"> (nouvel onglet)</span></span>
+              <img src="https://covers.openlibrary.org/b/isbn/9780321125217-M.jpg" alt="Couverture : Domain-Driven Design" class="w-full border border-ink mb-2.5 bg-white" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
+              <span class="text-sm text-ink-2 group-hover:text-blue transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Domain-Driven Design<span class="sr-only"> (nouvel onglet)</span></span>
             </a>
           </li>
           <li style="flex: 0 0 140px; scroll-snap-align: start;">
             <a href="https://www.fnac.com/SearchResult/ResultList.aspx?SCat=2!1&Search=Clean+Code+Robert+Martin" target="_blank" rel="noopener noreferrer" class="group block">
-              <img src="https://covers.openlibrary.org/b/isbn/9780132350884-M.jpg" alt="Couverture : Clean Code" class="w-full rounded-lg shadow-md mb-3 bg-surface-container-high" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
-              <span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Clean Code<span class="sr-only"> (nouvel onglet)</span></span>
+              <img src="https://covers.openlibrary.org/b/isbn/9780132350884-M.jpg" alt="Couverture : Clean Code" class="w-full border border-ink mb-2.5 bg-white" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
+              <span class="text-sm text-ink-2 group-hover:text-blue transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Clean Code<span class="sr-only"> (nouvel onglet)</span></span>
             </a>
           </li>
           <li style="flex: 0 0 140px; scroll-snap-align: start;">
             <a href="https://www.fnac.com/SearchResult/ResultList.aspx?SCat=2!1&Search=The+Software+Craftsman+Mancuso" target="_blank" rel="noopener noreferrer" class="group block">
-              <img src="assets/book-software-craftsman.jpg" alt="Couverture : The Software Craftsman" class="w-full rounded-lg shadow-md mb-3 bg-surface-container-high" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
-              <span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">The Software Craftsman<span class="sr-only"> (nouvel onglet)</span></span>
+              <img src="assets/book-software-craftsman.jpg" alt="Couverture : The Software Craftsman" class="w-full border border-ink mb-2.5 bg-white" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
+              <span class="text-sm text-ink-2 group-hover:text-blue transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">The Software Craftsman<span class="sr-only"> (nouvel onglet)</span></span>
             </a>
           </li>
           <li style="flex: 0 0 140px; scroll-snap-align: start;">
             <a href="https://www.momox-shop.fr/cyrille-martraire-software-craft-tdd-clean-code-et-autres-pratiques-essentielles-taschenbuch-M02100825208.html" target="_blank" rel="noopener noreferrer" class="group block">
-              <img src="assets/book-software-craft-tdd.jpg" alt="Couverture : Software Craft" class="w-full rounded-lg shadow-md mb-3 bg-surface-container-high" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
-              <span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Software Craft : TDD, Clean Code et autres pratiques essentielles<span class="sr-only"> (nouvel onglet)</span></span>
+              <img src="assets/book-software-craft-tdd.jpg" alt="Couverture : Software Craft" class="w-full border border-ink mb-2.5 bg-white" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
+              <span class="text-sm text-ink-2 group-hover:text-blue transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Software Craft : TDD, Clean Code et autres pratiques essentielles<span class="sr-only"> (nouvel onglet)</span></span>
             </a>
           </li>
           <li style="flex: 0 0 140px; scroll-snap-align: start;">
             <a href="https://www.amazon.fr/mots-sont-fen%C3%AAtres-bien-murs/dp/2707188794" target="_blank" rel="noopener noreferrer" class="group block">
-              <img src="assets/book-les-mots-fenetres.jpg" alt="Couverture : Les mots sont des fenêtres" class="w-full rounded-lg shadow-md mb-3 bg-surface-container-high" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
-              <span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Les mots sont des fenêtres (ou bien ce sont des murs)<span class="sr-only"> (nouvel onglet)</span></span>
+              <img src="assets/book-les-mots-fenetres.jpg" alt="Couverture : Les mots sont des fenêtres" class="w-full border border-ink mb-2.5 bg-white" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
+              <span class="text-sm text-ink-2 group-hover:text-blue transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Les mots sont des fenêtres (ou bien ce sont des murs)<span class="sr-only"> (nouvel onglet)</span></span>
             </a>
           </li>
           <li style="flex: 0 0 140px; scroll-snap-align: start;">
             <a href="https://www.amazon.com/Alice-Bob-Learn-Secure-Coding/dp/1394171706" target="_blank" rel="noopener noreferrer" class="group block">
-              <img src="assets/book-alice-bob-secure-coding.jpg" alt="Couverture : Alice and Bob Learn Secure Coding" class="w-full rounded-lg shadow-md mb-3 bg-surface-container-high" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
-              <span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Alice and Bob Learn Secure Coding<span class="sr-only"> (nouvel onglet)</span></span>
+              <img src="assets/book-alice-bob-secure-coding.jpg" alt="Couverture : Alice and Bob Learn Secure Coding" class="w-full border border-ink mb-2.5 bg-white" style="aspect-ratio:2/3;object-fit:cover;" loading="lazy" />
+              <span class="text-sm text-ink-2 group-hover:text-blue transition-colors leading-snug block" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Alice and Bob Learn Secure Coding<span class="sr-only"> (nouvel onglet)</span></span>
             </a>
           </li>
         </ul>
-      </div>
       </div>
     </section>
 
     <!-- ── CONTACT ───────────────────────────────────────────────────────────── -->
     <section
       id="contact"
-      class="py-24 bg-surface-container-highest/30"
+      class="px-5 md:px-10 py-16 md:py-20"
       aria-labelledby="contact-title"
     >
-      <div class="max-w-7xl mx-auto px-6 md:px-8">
-        <div class="liquid-glass rounded-[3rem] p-8 md:p-20 shadow-2xl overflow-hidden relative">
-          <!-- Dégradé décoratif -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+
+        <!-- Informations de contact -->
+        <div>
+          <h2 id="contact-title" class="font-display font-extrabold text-3xl md:text-[2.5rem] leading-[.98] tracking-tighter mb-5">
+            Travaillons ensemble.
+          </h2>
+          <p class="text-ink-2 leading-relaxed max-w-[52ch] mb-8">
+            Que vous ayez un projet précis ou souhaitiez simplement discuter de possibilités techniques, de l'amélioration de vos capacités de travail grâce à l'IA, ma boîte mail est toujours ouverte.
+          </p>
+          <address class="not-italic">
+            <p class="flex items-center gap-3">
+              <span class="w-9 h-9 border border-ink flex items-center justify-center text-blue shrink-0" aria-hidden="true">
+                <svg class="w-4 h-4"><use href="#i-pin" /></svg>
+              </span>
+              <span class="font-medium">Bordeaux — présentiel &amp; hybride</span>
+            </p>
+          </address>
+        </div>
+
+        <!-- Formulaire de contact -->
+        <div class="border border-ink bg-white p-6 md:p-8">
+          <!-- Zone de statut (aria-live pour lecteurs d'écran) -->
           <div
-            class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary-fixed/20 to-transparent pointer-events-none"
-            aria-hidden="true"
-          ></div>
+            id="form-status"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            class="mb-5 hidden"
+          >
+            <p id="form-status-msg" class="px-4 py-3 text-sm font-medium"></p>
+          </div>
 
-          <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16">
-
-            <!-- Informations de contact -->
-            <div>
-              <h2 id="contact-title" class="text-4xl font-headline font-bold text-on-surface mb-6">
-                Travaillons ensemble.
-              </h2>
-              <p class="text-lg text-on-surface-variant mb-12">
-                Que vous ayez un projet précis ou souhaitiez simplement discuter de possibilités techniques, de l'amélioration de vos capacités de travail grâce à l'IA, ma boîte mail est toujours ouverte.
-              </p>
-              <address class="space-y-6 not-italic">
-                <div class="flex items-center gap-4">
-                  <div
-                    class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary"
-                    aria-hidden="true"
-                  >
-                    <span class="material-symbols-outlined">location_on</span>
-                  </div>
-                  <span class="font-medium">Bordeaux — présentiel & hybride</span>
-                </div>
-              </address>
+          <form
+            id="contact-form"
+            novalidate
+            aria-label="Formulaire de contact"
+          >
+            <!--
+              Champ honeypot anti-spam.
+              Masqué visuellement ET hors du flux accessible.
+              Les bots remplissent ce champ ; un humain ne le voit pas.
+            -->
+            <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+              <input type="text" name="_b" id="_b" tabindex="-1" autocomplete="new-password" />
             </div>
 
-            <!-- Formulaire de contact -->
-            <div>
-              <!-- Zone de statut (aria-live pour lecteurs d'écran) -->
-              <div
-                id="form-status"
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
-                class="mb-6 hidden"
-              >
-                <p id="form-status-msg" class="px-4 py-3 rounded-xl text-sm font-label font-semibold"></p>
+            <div class="grid grid-cols-2 gap-4">
+
+              <!-- Civilité -->
+              <div class="col-span-2 sm:col-span-1">
+                <label for="salutation" class="block font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink-2 mb-1.5">
+                  Civilité
+                </label>
+                <select
+                  id="salutation"
+                  name="salutation"
+                  autocomplete="honorific-prefix"
+                  class="w-full bg-paper border border-ink px-3 py-2.5 text-ink placeholder:text-ink-2 focus:border-blue transition-colors"
+                >
+                  <option value="Mme">Mme</option>
+                  <option value="M.">M.</option>
+                  <option value="Autre">Autre</option>
+                </select>
               </div>
 
-              <form
-                id="contact-form"
-                novalidate
-                aria-label="Formulaire de contact"
-              >
-                <!--
-                  Champ honeypot anti-spam.
-                  Masqué visuellement ET hors du flux accessible.
-                  Les bots remplissent ce champ ; un humain ne le voit pas.
-                -->
-                <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
-                  <input type="text" name="_b" id="_b" tabindex="-1" autocomplete="new-password" />
-                </div>
+              <!-- Nom / Prénom -->
+              <div class="col-span-2 sm:col-span-1">
+                <label for="name" class="block font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink-2 mb-1.5">
+                  Nom / Prénom <abbr title="champ obligatoire" class="text-blue no-underline">*</abbr>
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autocomplete="name"
+                  required
+                  aria-required="true"
+                  aria-describedby="name-error"
+                  class="w-full bg-paper border border-ink px-3 py-2.5 text-ink placeholder:text-ink-2 focus:border-blue transition-colors"
+                  placeholder="Jean Dupont"
+                />
+                <p id="name-error" class="text-error text-xs mt-1 font-mono hidden" role="alert" aria-live="assertive"></p>
+              </div>
 
-                <div class="grid grid-cols-2 gap-6">
-
-                  <!-- Civilité -->
-                  <div class="col-span-2 sm:col-span-1">
-                    <label for="salutation" class="block text-sm font-label font-bold text-on-surface-variant mb-2">
-                      Civilité
-                    </label>
-                    <select
-                      id="salutation"
-                      name="salutation"
-                      autocomplete="honorific-prefix"
-                      class="w-full bg-surface-variant border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all"
-                    >
-                      <option value="Mme">Mme</option>
-                      <option value="M.">M.</option>
-                      <option value="Autre">Autre</option>
-                    </select>
-                  </div>
-
-                  <!-- Nom / Prénom -->
-                  <div class="col-span-2 sm:col-span-1">
-                    <label for="name" class="block text-sm font-label font-bold text-on-surface-variant mb-2">
-                      Nom / Prénom <abbr title="champ obligatoire">*</abbr>
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      autocomplete="name"
-                      required
-                      aria-required="true"
-                      aria-describedby="name-error"
-                      class="w-full bg-surface-variant border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all"
-                      placeholder="Jean Dupont"
-                    />
-                    <p id="name-error" class="text-error text-xs mt-1 font-label hidden" role="alert" aria-live="assertive"></p>
-                  </div>
-
-                </div>
-
-                <!-- Email -->
-                <div class="mt-6">
-                  <label for="email" class="block text-sm font-label font-bold text-on-surface-variant mb-2">
-                    Adresse e-mail <abbr title="champ obligatoire">*</abbr>
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autocomplete="email"
-                    required
-                    aria-required="true"
-                    aria-describedby="email-error"
-                    class="w-full bg-surface-variant border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all"
-                    placeholder="jean@exemple.com"
-                  />
-                  <p id="email-error" class="text-error text-xs mt-1 font-label hidden" role="alert" aria-live="assertive"></p>
-                </div>
-
-                <!-- Message -->
-                <div class="mt-6">
-                  <label for="message" class="block text-sm font-label font-bold text-on-surface-variant mb-2">
-                    Message <abbr title="champ obligatoire">*</abbr>
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="4"
-                    required
-                    aria-required="true"
-                    aria-describedby="message-hint message-error"
-                    class="w-full bg-surface-variant border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/20 transition-all resize-none"
-                    placeholder="Décrivez-moi votre projet…"
-                  ></textarea>
-                  <p id="message-hint" class="text-xs text-on-surface-variant mt-1 font-label">Au moins 10 caractères.</p>
-                  <p id="message-error" class="text-error text-xs mt-1 font-label hidden" role="alert" aria-live="assertive"></p>
-                </div>
-
-                <!-- Bouton envoi -->
-                <button
-                  type="submit"
-                  id="submit-btn"
-                  class="mt-6 w-full bg-primary text-on-primary font-headline font-bold py-4 rounded-xl hover:shadow-lg transition-all inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  <span id="submit-text">Envoyer le message</span>
-                  <span class="material-symbols-outlined" aria-hidden="true" id="submit-icon">send</span>
-                </button>
-
-                <p class="text-xs text-on-surface-variant font-label text-center mt-4">
-                  Les champs marqués <abbr title="obligatoire">*</abbr> sont obligatoires.
-                  Vos données sont utilisées uniquement pour répondre à votre message.
-                </p>
-
-              </form>
             </div>
 
-          </div>
+            <!-- Email -->
+            <div class="mt-4">
+              <label for="email" class="block font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink-2 mb-1.5">
+                Adresse e-mail <abbr title="champ obligatoire" class="text-blue no-underline">*</abbr>
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                aria-required="true"
+                aria-describedby="email-error"
+                class="w-full bg-paper border border-ink px-3 py-2.5 text-ink placeholder:text-ink-2 focus:border-blue transition-colors"
+                placeholder="jean@exemple.com"
+              />
+              <p id="email-error" class="text-error text-xs mt-1 font-mono hidden" role="alert" aria-live="assertive"></p>
+            </div>
+
+            <!-- Message -->
+            <div class="mt-4">
+              <label for="message" class="block font-mono text-[10.5px] font-medium uppercase tracking-[.11em] text-ink-2 mb-1.5">
+                Message <abbr title="champ obligatoire" class="text-blue no-underline">*</abbr>
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                required
+                aria-required="true"
+                aria-describedby="message-hint message-error"
+                class="w-full bg-paper border border-ink px-3 py-2.5 text-ink placeholder:text-ink-2 focus:border-blue transition-colors resize-none"
+                placeholder="Décrivez-moi votre projet…"
+              ></textarea>
+              <p id="message-hint" class="font-mono text-xs text-ink-2 mt-1">Au moins 10 caractères.</p>
+              <p id="message-error" class="text-error text-xs mt-1 font-mono hidden" role="alert" aria-live="assertive"></p>
+            </div>
+
+            <!-- Bouton envoi -->
+            <button
+              type="submit"
+              id="submit-btn"
+              class="mt-5 w-full bg-blue text-white font-medium py-3.5 hover:bg-blue-deep transition-colors inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <span id="submit-text">Envoyer le message</span>
+              <svg id="submit-icon" class="w-4 h-4" aria-hidden="true"><use href="#i-send" /></svg>
+            </button>
+
+            <p class="font-mono text-[11px] leading-relaxed text-ink-2 text-center mt-4">
+              Les champs marqués <abbr title="obligatoire">*</abbr> sont obligatoires.
+              Vos données sont utilisées uniquement pour répondre à votre message.
+            </p>
+
+          </form>
         </div>
+
       </div>
     </section>
 
   </main>
 
   <!-- ═══════════════════════════════════════════════════════════ PIED DE PAGE -->
-  <footer class="w-full py-12 mt-24 bg-slate-50">
-    <div class="flex flex-col md:flex-row justify-between items-center px-6 md:px-8 border-t border-slate-200/50 max-w-7xl mx-auto pt-12 gap-8">
-      <div class="text-center md:text-left">
-        <p class="font-body text-xs uppercase tracking-widest text-slate-500">
-          © <span id="current-year">2025</span> Robin Aldasoro <span class="text-slate-300 normal-case tracking-normal font-mono">↑↑↓↓←→←→BA</span>
+  <footer class="bg-ink text-paper px-5 md:px-10 py-12">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+      <div>
+        <p class="font-mono text-[11px] uppercase tracking-[.14em] text-paper/60">
+          © <span id="current-year">2025</span> Robin Aldasoro
+          <span class="text-paper/50 normal-case tracking-normal">↑↑↓↓←→←→BA</span>
         </p>
-        <p class="font-body text-xs text-slate-400 mt-1">
+        <p class="font-mono text-[11px] text-paper/70 mt-1.5">
           Made with <s>Love</s> Claude in Bordeaux
         </p>
       </div>
 
       <nav aria-label="Liens secondaires">
-        <ul class="flex gap-6 list-none m-0 p-0">
+        <ul class="flex flex-wrap gap-x-6 gap-y-2 list-none m-0 p-0">
           <li>
             <a
               href="https://github.com/robinos33"
               id="link-github"
-              class="font-body text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+              class="font-mono text-[11px] uppercase tracking-[.14em] text-paper/60 hover:text-amber transition-colors"
               rel="noopener noreferrer"
               target="_blank"
             >GitHub <span class="sr-only">(nouvel onglet)</span></a>
@@ -755,7 +745,7 @@
             <a
               href="https://fr.linkedin.com/in/robin-aldasoro"
               id="link-linkedin"
-              class="font-body text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+              class="font-mono text-[11px] uppercase tracking-[.14em] text-paper/60 hover:text-amber transition-colors"
               rel="noopener noreferrer"
               target="_blank"
             >LinkedIn <span class="sr-only">(nouvel onglet)</span></a>
@@ -763,13 +753,13 @@
           <li>
             <a
               href="mentions-legales.html"
-              class="font-body text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+              class="font-mono text-[11px] uppercase tracking-[.14em] text-paper/60 hover:text-amber transition-colors"
             >Mentions légales</a>
           </li>
           <li>
             <a
               href="https://ara.numerique.gouv.fr/rapport/fslsjIsnBRP-H9hHdzjpK/"
-              class="font-body text-xs uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+              class="font-mono text-[11px] uppercase tracking-[.14em] text-paper/60 hover:text-amber transition-colors"
               rel="noopener noreferrer"
               target="_blank"
             >Accessibilité&nbsp;: conforme <span class="sr-only">(nouvel onglet)</span></a>
@@ -778,6 +768,37 @@
       </nav>
     </div>
   </footer>
+
+  <!--
+    Sprite d'icônes.
+    Remplace la police Material Symbols chargée depuis Google Fonts : une
+    dépendance tierce en moins, et surtout plus de flash disgracieux où le nom
+    de l'icône s'affiche en texte le temps que la police arrive.
+  -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+        <path d="M3 6h18M3 12h18M3 18h18" />
+      </symbol>
+      <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+        <path d="M5 5l14 14M19 5L5 19" />
+      </symbol>
+      <symbol id="i-arrow-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 4v16M5 13l7 7 7-7" />
+      </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </symbol>
+      <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 12h15M13 6l6 6-6 6" />
+      </symbol>
+      <symbol id="i-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="8" opacity=".25" />
+        <path d="M20 12a8 8 0 0 0-8-8" />
+      </symbol>
+    </defs>
+  </svg>
 
   <!-- ═══════════════════════════════════════════════════════════ SCRIPTS -->
   <script>
@@ -788,27 +809,26 @@
     // ── Menu mobile ────────────────────────────────────────────────────────────
     const menuBtn    = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-    const menuIcon   = menuBtn.querySelector('.material-symbols-outlined');
+    const menuIcon   = document.getElementById('menu-icon');
+
+    function setMenu(open) {
+      mobileMenu.classList.toggle('hidden', !open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu de navigation');
+      menuIcon.firstElementChild.setAttribute('href', open ? '#i-close' : '#i-menu');
+    }
 
     menuBtn.addEventListener('click', () => {
-      const isNowOpen = mobileMenu.classList.toggle('hidden') === false;
-      menuBtn.setAttribute('aria-expanded', String(isNowOpen));
-      menuBtn.setAttribute('aria-label', isNowOpen ? 'Fermer le menu' : 'Ouvrir le menu de navigation');
-      menuIcon.textContent = isNowOpen ? 'close' : 'menu';
+      setMenu(mobileMenu.classList.contains('hidden'));
     });
 
     mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.setAttribute('aria-label', 'Ouvrir le menu de navigation');
-        menuIcon.textContent = 'menu';
-      });
+      link.addEventListener('click', () => setMenu(false));
     });
 
     // ── Lien actif selon la section visible ────────────────────────────────────
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks  = document.querySelectorAll('#nav-hero, #nav-skills, #nav-experience, #nav-contact');
+    const sections = document.querySelectorAll('main section[id]');
+    const navLinks = document.querySelectorAll('nav ul a[id^="nav-"]');
 
     const sectionObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -816,11 +836,9 @@
         const id = entry.target.id;
         navLinks.forEach(link => {
           const active = link.getAttribute('href') === `#${id}`;
-          link.classList.toggle('text-primary',          active);
-          link.classList.toggle('font-bold',             active);
-          link.classList.toggle('border-b-2',            active);
-          link.classList.toggle('border-primary',        active);
-          link.classList.toggle('text-on-surface-variant', !active);
+          link.classList.toggle('text-blue',    active);
+          link.classList.toggle('font-medium',  active);
+          link.classList.toggle('text-ink-2',  !active);
           active
             ? link.setAttribute('aria-current', 'page')
             : link.removeAttribute('aria-current');
@@ -885,10 +903,10 @@
       const container = document.getElementById('form-status');
       const p         = document.getElementById('form-status-msg');
       container.classList.remove('hidden');
-      p.className = `px-4 py-3 rounded-xl text-sm font-label font-semibold ${
+      p.className = `px-4 py-3 text-sm font-medium ${
         type === 'success'
-          ? 'bg-primary-fixed text-on-primary-fixed'
-          : 'bg-error-container text-on-error-container'
+          ? 'bg-ok-bg text-ok'
+          : 'bg-error-bg text-error'
       }`;
       p.textContent = msg;
       // Déplace le focus vers la zone de statut pour les lecteurs d'écran
@@ -924,13 +942,14 @@
         return;
       }
 
-      const btn      = document.getElementById('submit-btn');
-      const btnText  = document.getElementById('submit-text');
-      const btnIcon  = document.getElementById('submit-icon');
+      const btn     = document.getElementById('submit-btn');
+      const btnText = document.getElementById('submit-text');
+      const btnIcon = document.getElementById('submit-icon');
 
-      btn.disabled       = true;
+      btn.disabled        = true;
       btnText.textContent = 'Envoi en cours…';
-      btnIcon.textContent = 'hourglass_empty';
+      btnIcon.firstElementChild.setAttribute('href', '#i-spinner');
+      btnIcon.classList.add('animate-spin');
 
       try {
         const res = await fetch(FUNCTION_URL, {
@@ -960,14 +979,20 @@
         setFormStatus('error', "Une erreur est survenue lors de l'envoi. Merci de réessayer dans quelques instants.");
       } finally {
         btn.disabled        = false;
-        btnText.textContent  = 'Envoyer le message';
-        btnIcon.textContent  = 'send';
+        btnText.textContent = 'Envoyer le message';
+        btnIcon.firstElementChild.setAttribute('href', '#i-send');
+        btnIcon.classList.remove('animate-spin');
       }
     });
   </script>
 
   <script>
     // ── Konami Code easter egg ────────────────────────────────────────────────
+    //
+    // Les coiffures n'ont pas besoin d'être retouchées pour coller à la nouvelle
+    // colorimétrie : le duotone est appliqué par le conteneur `.duotone` (fond
+    // outremer + mix-blend-mode: luminosity, voir input.css). Toute image
+    // injectée ici hérite donc automatiquement du traitement.
     const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
     const HAIRSTYLES = [
       'assets/robin-hair-1.png',
@@ -986,17 +1011,14 @@
         ? candidates[Math.floor(Math.random() * candidates.length)]
         : pool[0];
       photo.style.opacity = '0';
-      setTimeout(() => { photo.src = next; photo.style.opacity = '1'; }, 300);
+      setTimeout(() => { photo.src = next; photo.style.opacity = ''; }, 300);
     }
 
     // Konami Code (desktop) + fermeture menu mobile par Échap
     let konamiIndex = 0;
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
-        mobileMenu.classList.add('hidden');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.setAttribute('aria-label', 'Ouvrir le menu de navigation');
-        menuIcon.textContent = 'menu';
+        setMenu(false);
         menuBtn.focus();
         return;
       }
@@ -1011,7 +1033,7 @@
     // Long press (mobile)
     const photo = document.getElementById('hero-photo');
     let pressTimer = null;
-    photo.addEventListener('touchstart', (e) => {
+    photo.addEventListener('touchstart', () => {
       pressTimer = setTimeout(() => { pressTimer = null; swapHairstyle(); }, 700);
     }, { passive: true });
     photo.addEventListener('touchend', () => { clearTimeout(pressTimer); pressTimer = null; });
