@@ -39,6 +39,14 @@
 </head>
 <body class="bg-paper text-ink font-body antialiased selection:bg-amber selection:text-ink">
 
+  <!--
+    Fond décoratif : un historique Git en perspective, piloté par le scroll
+    (script en fin de page). `-z-10` le place sous le contenu mais au-dessus du
+    fond du body, qui est propagé au canevas racine : les sections sans fond
+    le laissent apparaître, celles à fond plein le masquent.
+  -->
+  <canvas id="git-bg" class="fixed inset-0 w-full h-full -z-10 pointer-events-none" aria-hidden="true"></canvas>
+
   <!-- Lien d'évitement (RGAA 12.7) -->
   <a href="#contenu-principal" class="skip-link">Aller au contenu principal</a>
 
@@ -1039,6 +1047,160 @@
     photo.addEventListener('touchend', () => { clearTimeout(pressTimer); pressTimer = null; });
     photo.addEventListener('touchmove', () => { clearTimeout(pressTimer); pressTimer = null; });
     photo.addEventListener('contextmenu', (e) => e.preventDefault());
+  </script>
+
+  <script>
+    // ── Fond : historique Git en perspective ──────────────────────────────────
+    //
+    // Un graphe de commits posé sur un plan incliné, qui défile plus lentement
+    // que la page (parallaxe). Canvas 2D et projection perspective faite main :
+    // aucune dépendance, compatible avec la CSP.
+    //
+    // Coût : aucune boucle au repos. On ne redessine que lorsque le défilement
+    // bouge, avec un lissage qui s'arrête dès que la position cible est atteinte.
+    //
+    // Accessibilité : sous `prefers-reduced-motion`, le fond reste une image fixe.
+    // Les opacités sont plafonnées : un trait d'encre à 14 % composé sur le
+    // papier laisse encore 4,5:1 au texte secondaire (ink-2) qui passerait
+    // dessus. INTENSITY multiplie ces plafonds : ne pas dépasser 1.
+    (() => {
+      const cvs = document.getElementById('git-bg');
+      const ctx = cvs.getContext && cvs.getContext('2d');
+      if (!ctx) return;
+
+      const INTENSITY = 0.7;
+      const MAX_INK = 0.12, MAX_BLUE = 0.16;
+      const PAPER = '#f4f4f2';
+      const ink  = a => `rgba(16,16,20,${Math.min(a, 1) * MAX_INK * INTENSITY})`;
+      const blue = a => `rgba(37,64,255,${Math.min(a, 1) * MAX_BLUE * INTENSITY})`;
+
+      // Préfixes tirés du vrai historique du dépôt. Volontairement courts : les
+      // libellés tiennent dans la marge droite sans passer sous le texte.
+      const MSGS = [
+        'feat(design)', 'perf(hero)', 'fix(copy)', 'chore', 'feat(copy)',
+        'chore(assets)', 'fix(a11y)', 'fix(ui)', 'fix(seo)', 'fix(csp)',
+      ];
+
+      // Graphe déterministe : une branche principale, des branches de fonction
+      // sur trois couloirs, sans chevauchement sur un même couloir.
+      function rng(seed) {
+        const next = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+        for (let i = 0; i < 20; i++) next(); // les premiers tirages de Park-Miller sont corrélés
+        return next;
+      }
+      const N = 64, branches = [];
+      {
+        const r = rng(7);
+        for (let i = 2; i < N - 6; i++) {
+          if (r() >= 0.22) continue;
+          const lane = 1 + Math.floor(r() * 3), len = 3 + Math.floor(r() * 6);
+          const free = !branches.some(b => b.lane === lane && !(i > b.to + 1 || i + len < b.from - 1));
+          if (free) branches.push({ lane, from: i, to: i + len });
+        }
+      }
+      const merges = new Set(branches.map(b => b.to));
+
+      // Rotation autour de Y puis de X, puis projection perspective.
+      function rot([x, y, z], ax, ay) {
+        let c = Math.cos(ay), s = Math.sin(ay);
+        [x, z] = [x * c + z * s, -x * s + z * c];
+        c = Math.cos(ax); s = Math.sin(ax);
+        [y, z] = [y * c - z * s, y * s + z * c];
+        return [x, y, z];
+      }
+
+      let W = 0, H = 0, cur = 0, raf = 0;
+      const mq = matchMedia('(prefers-reduced-motion: reduce)');
+      // Le texte de la section Expérience s'arrête vers x = 960 px (colonne de
+      // 200 px + 68ch). En dessous de 1200 px de large, le graphe passerait dessous.
+      const MIN_WIDTH = 1200;
+
+      function progress() {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        return max > 0 ? Math.min(Math.max(scrollY / max, 0), 1) : 0;
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        if (W < MIN_WIDTH) return;
+        const SP = 46, LW = 34, D = 800;
+        const offset = cur * (N * SP - 900) - 200;
+        const ay = 0.55, ax = -0.42; // le haut du plan fuit vers le fond
+        const cx = W - 180, cy = H * 0.5, f = D * 1.15;
+        const tr = (lane, i) => {
+          // Branche principale à droite, branches de fonction vers la gauche :
+          // la marge à droite de la branche principale reste libre pour les libellés.
+          const [x, y, z] = rot([-lane * LW, i * SP - offset - H * 0.5, 0], ax, ay);
+          const k = f / (z + D);
+          return [cx + x * k, cy + y * k, k];
+        };
+        const visible = q => q[1] > -60 && q[1] < H + 60;
+        const curve = (l1, i1, l2, i2) => {
+          ctx.beginPath();
+          for (let k = 0; k <= 12; k++) {
+            const t = k / 12, e = t * t * (3 - 2 * t);
+            const q = tr(l1 + (l2 - l1) * e, i1 + (i2 - i1) * t);
+            ctx[k ? 'lineTo' : 'moveTo'](q[0], q[1]);
+          }
+          ctx.stroke();
+        };
+        const node = (lane, i, fill, stroke) => {
+          const q = tr(lane, i);
+          if (!visible(q)) return q;
+          const s = 7 * q[2];
+          ctx.fillStyle = PAPER; ctx.fillRect(q[0] - s / 2, q[1] - s / 2, s, s);
+          if (fill) { ctx.fillStyle = fill; ctx.fillRect(q[0] - s / 2, q[1] - s / 2, s, s); }
+          else { ctx.strokeStyle = stroke; ctx.strokeRect(q[0] - s / 2, q[1] - s / 2, s, s); }
+          return q;
+        };
+
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = ink(1.1); curve(0, 0, 0, N);
+        for (const b of branches) {
+          ctx.strokeStyle = b.lane === 1 ? blue(1.6) : ink(0.8);
+          curve(0, b.from, b.lane, b.from + 1);
+          curve(b.lane, b.from + 1, b.lane, b.to - 1);
+          curve(b.lane, b.to - 1, 0, b.to);
+        }
+        for (const b of branches) {
+          for (let i = b.from + 1; i < b.to; i++) node(b.lane, i, null, b.lane === 1 ? blue(2.5) : ink(1.6));
+        }
+        ctx.font = "400 11px 'IBM Plex Mono', monospace";
+        for (let i = 0; i < N; i++) {
+          const q = node(0, i, merges.has(i) ? blue(4) : ink(2.5));
+          if (i % 3 !== 1 || !visible(q)) continue;
+          const hash = (0x1f3a9c7 * (i + 3) >>> 0).toString(16).slice(0, 7);
+          const label = `${hash}  ${MSGS[i % MSGS.length]}`;
+          ctx.fillStyle = ink(3.2);
+          ctx.fillText(label, q[0] + 12, q[1] + 4);
+        }
+      }
+
+      function tick() {
+        raf = 0;
+        const target = mq.matches ? 0.3 : progress();
+        cur += (target - cur) * 0.12;
+        if (Math.abs(target - cur) < 0.0004) cur = target; else kick();
+        draw();
+      }
+      function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+
+      function resize() {
+        const dpr = Math.min(devicePixelRatio || 1, 2);
+        W = innerWidth; H = innerHeight;
+        cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        draw();
+      }
+
+      cur = mq.matches ? 0.3 : progress();
+      resize();
+      addEventListener('scroll', () => { if (W >= MIN_WIDTH) kick(); }, { passive: true });
+      addEventListener('resize', resize);
+      mq.addEventListener('change', kick);
+      // La police mono arrive après le premier rendu : on redessine les libellés.
+      if (document.fonts) document.fonts.ready.then(draw);
+    })();
   </script>
 
 </body>
