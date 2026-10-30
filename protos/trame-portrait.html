@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Proto — portrait tramé WebGPU</title>
+  <style>
+    @font-face { font-family: 'Bricolage Grotesque'; src: url('../assets/fonts/bricolage-grotesque-600-800.woff2') format('woff2'); font-weight: 600 800; font-display: swap; }
+    @font-face { font-family: 'IBM Plex Sans'; src: url('../assets/fonts/ibm-plex-sans-400-600.woff2') format('woff2'); font-weight: 400 600; font-display: swap; }
+    @font-face { font-family: 'IBM Plex Mono'; src: url('../assets/fonts/ibm-plex-mono-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+
+    :root { --paper: #f4f4f2; --ink: #101014; --ink-2: #5b5b63; --rule: #dedcd6; --blue: #2540ff; --amber: #ffcf3d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 'IBM Plex Sans', system-ui, sans-serif; }
+    main { max-width: 1100px; margin: 0 auto; padding: 40px 20px 80px; }
+    h1 { font: 800 2.4rem/1 'Bricolage Grotesque', sans-serif; letter-spacing: -.03em; margin: 0 0 16px; }
+    .lede { color: var(--ink-2); max-width: 70ch; margin: 0 0 32px; }
+    .mono { font: 400 11px/1.4 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: .1em; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+    figure { margin: 0; }
+    figcaption { margin-top: 10px; color: var(--ink-2); }
+    /* Même cadrage que la colonne portrait du hero : object-fit cover, 50 % 20 %. */
+    .frame { position: relative; aspect-ratio: 4 / 5; border: 1px solid var(--ink); overflow: hidden; }
+    .duotone { background: var(--blue); isolation: isolate; }
+    .duotone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; mix-blend-mode: luminosity; opacity: .88; }
+    canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: crosshair; }
+    .badge { position: absolute; left: 0; bottom: 0; background: var(--amber); padding: 10px 14px; display: flex; gap: 8px; align-items: baseline; pointer-events: none; }
+    .badge b { font: 800 1.5rem/1 'Bricolage Grotesque', sans-serif; }
+
+    .controls { display: flex; flex-wrap: wrap; gap: 20px 28px; align-items: end; margin: 28px 0 8px; padding: 18px 20px; border: 1px solid var(--ink); background: #fff; }
+    .controls fieldset { border: 0; padding: 0; margin: 0; display: flex; gap: 6px; }
+    .controls legend { margin-bottom: 8px; }
+    .controls label.opt { border: 1px solid var(--ink); padding: 6px 12px; cursor: pointer; }
+    .controls input[type=radio] { position: absolute; opacity: 0; pointer-events: none; }
+    .controls input[type=radio]:checked + span { background: var(--ink); color: var(--paper); }
+    .controls label.opt:has(input:checked) { background: var(--ink); color: var(--paper); }
+    .controls label.opt:has(input:focus-visible) { outline: 2px solid var(--blue); outline-offset: 2px; }
+    .range { display: flex; flex-direction: column; gap: 6px; }
+    .range input { width: 160px; accent-color: var(--blue); }
+    button { font: inherit; background: var(--blue); color: #fff; border: 0; padding: 10px 18px; cursor: pointer; }
+    button:hover { background: #1b2fc4; }
+    button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+    .notice { display: none; position: absolute; inset: 0; padding: 24px; background: var(--paper); color: var(--ink-2); align-items: center; justify-content: center; text-align: center; }
+    .notice.on { display: flex; }
+    .notes { margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 24px; color: var(--ink-2); max-width: 75ch; }
+    .notes li { margin-bottom: 6px; }
+    code { font-family: 'IBM Plex Mono', monospace; font-size: .9em; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="mono" style="color:var(--ink-2)">Prototype · non publié</p>
+  <h1>Portrait en trame d'imprimerie</h1>
+  <p class="lede">
+    À gauche, le portrait actuel du hero : un duotone en CSS. À droite, le même
+    portrait <strong>retramé par un shader WebGPU</strong>, comme une photo
+    imprimée en offset. Passe la souris (ou le doigt) dessus : la trame se
+    resserre sous le curseur, comme une loupe, et laisse voir le détail.
+    Le bouton rejoue le changement de coiffure du code Konami, en fondu tramé.
+  </p>
+
+  <div class="grid">
+    <figure>
+      <div class="frame duotone">
+        <img id="css-img" src="../assets/robin-aldasoro.jpg" alt="Portrait de Robin Aldasoro, traitement duotone CSS actuel" />
+        <p class="badge"><b>15+</b><span class="mono" style="font-size:10px">ans d'expérience</span></p>
+      </div>
+      <figcaption class="mono">Aujourd'hui — CSS (fond outremer + luminosity)</figcaption>
+    </figure>
+    <figure>
+      <div class="frame" style="background:var(--blue)">
+        <canvas id="gpu" aria-hidden="true"></canvas>
+        <p class="badge"><b>15+</b><span class="mono" style="font-size:10px">ans d'expérience</span></p>
+        <div class="notice" id="notice">
+          <p>WebGPU n'est pas disponible dans ce navigateur.<br />Sur le site, on garderait simplement la version CSS de gauche.</p>
+        </div>
+      </div>
+      <figcaption class="mono">Proto — WebGPU (fragment shader)</figcaption>
+    </figure>
+  </div>
+
+  <div class="controls">
+    <fieldset>
+      <legend class="mono">Trame</legend>
+      <label class="opt"><input type="radio" name="mode" value="0" checked />Points</label>
+      <label class="opt"><input type="radio" name="mode" value="1" />Dithering</label>
+      <label class="opt"><input type="radio" name="mode" value="2" />Lignes</label>
+    </fieldset>
+    <label class="range"><span class="mono">Taille de la trame</span><input id="cell" type="range" min="4" max="20" step="0.5" value="9" /></label>
+    <label class="range"><span class="mono">Force de la loupe</span><input id="lens" type="range" min="0" max="1" step="0.05" value="0.8" /></label>
+    <button id="swap" type="button">Changer de coiffure</button>
+  </div>
+
+  <div class="notes">
+    <p class="mono">Ce que montre le proto</p>
+    <ul>
+      <li><strong>Points</strong> : trame offset classique à 45°. Chaque point blanc grossit avec la luminosité du pixel en dessous.</li>
+      <li><strong>Dithering</strong> : matrice de Bayer 4×4 sur trois encres (noir, outremer, blanc), façon écran 1 bit.</li>
+      <li><strong>Lignes</strong> : trame de lignes, façon gravure.</li>
+      <li>Rendu <em>à la demande</em> : une image quand on bouge la souris ou pendant la transition, puis plus rien. Pas de boucle au repos.</li>
+      <li>Sous <code>prefers-reduced-motion</code> : la loupe suit sans lissage et la coiffure change d'un coup.</li>
+      <li>Repli : sans WebGPU, rien n'est chargé et le portrait CSS reste tel quel.</li>
+    </ul>
+  </div>
+</main>
+
+<script type="module">
+  // ── Portrait tramé ────────────────────────────────────────────────────────
+  //
+  // Tout se joue dans un fragment shader : pour chaque pixel, on compare la
+  // luminosité de la photo à un « seuil de trame » (distance au centre du
+  // point, valeur de Bayer, ou distance à la ligne). C'est ainsi que les RIP
+  // d'imprimerie tramaient : pas besoin d'échantillonner le centre de chaque
+  // cellule, le contour des points épouse naturellement celui de l'image.
+  //
+  // La loupe déforme l'espace de la trame autour du curseur (la grille y est
+  // plus dense) sans toucher à la photo elle-même.
+
+  const SHADER = /* wgsl */ `
+    struct U {
+      res: vec2f, mouse: vec2f,
+      sizeA: vec2f, sizeB: vec2f,
+      cell: f32, mode: f32, lens: f32, mixT: f32,
+    };
+    @group(0) @binding(0) var<uniform> u: U;
+    @group(0) @binding(1) var samp: sampler;
+    @group(0) @binding(2) var texA: texture_2d<f32>;
+    @group(0) @binding(3) var texB: texture_2d<f32>;
+
+    @vertex fn vs(@builtin(vertex_index) i: u32) -> @builtin(position) vec4f {
+      let p = vec2f(f32((i << 1u) & 2u), f32(i & 2u));
+      return vec4f(p * 2.0 - 1.0, 0.0, 1.0);
+    }
+
+    // object-fit: cover; object-position: 50% 20% — même cadrage que le hero.
+    fn cover(px: vec2f, size: vec2f) -> vec2f {
+      let s = max(u.res.x / size.x, u.res.y / size.y);
+      let disp = size * s;
+      return (px - (u.res - disp) * vec2f(0.5, 0.2)) / disp;
+    }
+
+    fn luma(t: texture_2d<f32>, uv: vec2f) -> f32 {
+      let c = textureSampleLevel(t, samp, uv, 0.0).rgb;
+      return dot(c, vec3f(0.2126, 0.7152, 0.0722));
+    }
+
+    fn bayer(p: vec2i) -> f32 {
+      var m = array<f32, 16>(0., 8., 2., 10., 12., 4., 14., 6., 3., 11., 1., 9., 15., 7., 13., 5.);
+      let x = u32(p.x & 3); let y = u32(p.y & 3);
+      return (m[y * 4u + x] + 0.5) / 16.0;
+    }
+
+    const BLUE  = vec3f(0.0185, 0.0513, 1.0);   // #2540ff en linéaire
+    const INK   = vec3f(0.0052, 0.0052, 0.0070); // #101014
+    const WHITE = vec3f(1.0);
+
+    // Couleur de la trame au pixel px, pour une taille de cellule et une
+    // luminosité données.
+    fn screen(px: vec2f, cell: f32, L: f32) -> vec3f {
+      // Grille tournée à 45° (angle d'écran du noir en offset).
+      let gr = mat2x2f(0.7071, -0.7071, 0.7071, 0.7071) * (px / cell);
+      let lp = fract(gr) - 0.5;
+      if (u.mode < 0.5) {
+        // Points blancs sur aplat outremer, rayon ∝ √luminosité (surface ∝ L).
+        let dist = length(lp);
+        let rad = sqrt(L / 3.14159) * 1.05;
+        let aa = fwidth(dist) * 0.75;
+        return mix(BLUE, WHITE, smoothstep(rad + aa, rad - aa, dist));
+      } else if (u.mode < 1.5) {
+        // Bayer sur trois encres, pixels de trame alignés sur l'écran.
+        let v = L * 2.0;
+        let lvl = floor(v) + select(0.0, 1.0, fract(v) > bayer(vec2i(floor(px / (cell * 0.45)))));
+        return select(select(WHITE, BLUE, lvl < 1.5), INK, lvl < 0.5);
+      }
+      // Lignes blanches, épaisseur ∝ luminosité.
+      let dist = abs(lp.y);
+      let w = L * 0.5;
+      let aa = fwidth(dist) * 0.75;
+      return mix(BLUE, WHITE, smoothstep(w + aa, w - aa, dist));
+    }
+
+    @fragment fn fs(@builtin(position) pos: vec4f) -> @location(0) vec4f {
+      let px = pos.xy;
+
+      // Transition de coiffure : chaque cellule de la trame bascule à son
+      // tour, dans l'ordre de la matrice de Bayer.
+      let id = floor(mat2x2f(0.7071, -0.7071, 0.7071, 0.7071) * (px / u.cell));
+      let useB = bayer(vec2i(id)) < u.mixT;
+      let la = luma(texA, cover(px, u.sizeA));
+      let lb = luma(texB, cover(px, u.sizeB));
+      var L = select(la, lb, useB);
+      L = clamp((L - 0.06) * 1.25, 0.0, 1.0); // un peu de contraste, comme à l'encrage
+
+      // Loupe : sous le curseur, une trame plus fine prend le relais. Le
+      // passage de l'une à l'autre est lui-même tramé (Bayer), pour garder
+      // des aplats francs sans aucune couleur intermédiaire.
+      let d = px - u.mouse;
+      let r = 0.2 * max(u.res.x, u.res.y);
+      let k = exp(-dot(d, d) / (r * r)) * min(u.lens, 1.0);
+      let coarse = screen(px, u.cell, L);
+      let fine = screen(px, u.cell / (1.0 + 2.5 * u.lens), L);
+      let pick = bayer(vec2i(floor(px / max(u.cell * 0.3, 1.0)))) < k;
+      return vec4f(select(coarse, fine, pick), 1.0);
+    }
+  `;
+
+  const canvas = document.getElementById('gpu');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  async function init() {
+    const adapter = await navigator.gpu?.requestAdapter();
+    const device = await adapter?.requestDevice();
+    if (!device) throw new Error('WebGPU indisponible');
+
+    const ctx = canvas.getContext('webgpu');
+    const format = navigator.gpu.getPreferredCanvasFormat();
+    // Le shader travaille en linéaire : on cible un format *-srgb pour que la
+    // conversion se fasse à l'écriture, sinon les aplats sortent trop sombres.
+    const viewFormat = format + '-srgb';
+    ctx.configure({ device, format, alphaMode: 'opaque', viewFormats: [viewFormat] });
+
+    async function loadTexture(url) {
+      // Décodage via un canvas 2D puis writeTexture : copyExternalImageToTexture
+      // échoue sur certains pilotes (SwiftShader notamment), et pour des
+      // images de cette taille la copie CPU ne coûte que quelques ms.
+      const bmp = await createImageBitmap(await (await fetch(url)).blob());
+      const { width: w, height: h } = bmp;
+      const c2d = new OffscreenCanvas(w, h).getContext('2d');
+      c2d.drawImage(bmp, 0, 0);
+      const tex = device.createTexture({
+        size: [w, h],
+        format: 'rgba8unorm',
+        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+      });
+      device.queue.writeTexture({ texture: tex }, c2d.getImageData(0, 0, w, h).data, { bytesPerRow: w * 4 }, [w, h]);
+      return { tex, w, h };
+    }
+
+    const urls = [
+      '../assets/robin-aldasoro.jpg',
+      '../assets/robin-hair-1.avif', '../assets/robin-hair-2.avif', '../assets/robin-hair-3.avif',
+      '../assets/robin-hair-4.avif', '../assets/robin-hair-5.avif',
+    ];
+    const textures = [await loadTexture(urls[0])];
+    // Les coiffures ne sont chargées qu'au premier clic, comme sur le site.
+    async function textureAt(i) {
+      textures[i] ??= await loadTexture(urls[i]);
+      return textures[i];
+    }
+
+    const module = device.createShaderModule({ code: SHADER });
+    const pipeline = device.createRenderPipeline({
+      layout: 'auto',
+      vertex: { module, entryPoint: 'vs' },
+      fragment: { module, entryPoint: 'fs', targets: [{ format: viewFormat }] },
+      primitive: { topology: 'triangle-list' },
+    });
+    const sampler = device.createSampler({ magFilter: 'linear', minFilter: 'linear' });
+    const ubo = device.createBuffer({ size: 64, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
+    const uni = new Float32Array(16);
+
+    let a = textures[0], b = textures[0], bind;
+    function rebind() {
+      bind = device.createBindGroup({
+        layout: pipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: { buffer: ubo } },
+          { binding: 1, resource: sampler },
+          { binding: 2, resource: a.tex.createView() },
+          { binding: 3, resource: b.tex.createView() },
+        ],
+      });
+    }
+    rebind();
+
+    // ── État : valeurs cibles et valeurs lissées ─────────────────────────────
+    const ui = { mode: 0, cell: 9, lens: 0.8 };
+    const target = { x: 0, y: 0, lens: 0 };
+    const cur = { x: 0, y: 0, lens: 0 };
+    let mixT = 0, mixTarget = 0, dpr = 1, raf = 0;
+
+    function frame() {
+      raf = 0;
+      const e = reduce.matches ? 1 : 0.18;
+      cur.x += (target.x - cur.x) * e;
+      cur.y += (target.y - cur.y) * e;
+      cur.lens += (target.lens - cur.lens) * e;
+      mixT = reduce.matches ? mixTarget : Math.min(mixT + 0.035, mixTarget);
+
+      const moving = Math.abs(target.x - cur.x) + Math.abs(target.y - cur.y) > 0.3
+        || Math.abs(target.lens - cur.lens) > 0.002 || mixT < mixTarget;
+
+      uni.set([
+        canvas.width, canvas.height, cur.x, cur.y,
+        a.w, a.h, b.w, b.h,
+        ui.cell * dpr, ui.mode, cur.lens, mixT,
+      ]);
+      device.queue.writeBuffer(ubo, 0, uni);
+
+      const enc = device.createCommandEncoder();
+      const pass = enc.beginRenderPass({
+        colorAttachments: [{
+          view: ctx.getCurrentTexture().createView({ format: viewFormat }),
+          loadOp: 'clear', storeOp: 'store', clearValue: [0, 0, 0, 1],
+        }],
+      });
+      pass.setPipeline(pipeline);
+      pass.setBindGroup(0, bind);
+      pass.draw(3);
+      pass.end();
+      device.queue.submit([enc.finish()]);
+
+      if (moving) kick();
+      else if (mixTarget === 1 && mixT === 1) { a = b; mixT = mixTarget = 0; rebind(); }
+    }
+    const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
+
+    // ── Entrées ──────────────────────────────────────────────────────────────
+    function resize() {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = Math.round(canvas.clientWidth * dpr);
+      canvas.height = Math.round(canvas.clientHeight * dpr);
+      if (!target.lens) { target.x = cur.x = canvas.width / 2; target.y = cur.y = canvas.height * 0.3; }
+      kick();
+    }
+    new ResizeObserver(resize).observe(canvas);
+
+    canvas.addEventListener('pointermove', (ev) => {
+      const r = canvas.getBoundingClientRect();
+      target.x = (ev.clientX - r.left) * dpr;
+      target.y = (ev.clientY - r.top) * dpr;
+      target.lens = ui.lens;
+      kick();
+    });
+    canvas.addEventListener('pointerleave', () => { target.lens = 0; kick(); });
+
+    document.querySelectorAll('input[name=mode]').forEach((el) =>
+      el.addEventListener('change', () => { ui.mode = +el.value; kick(); }));
+    document.getElementById('cell').addEventListener('input', (ev) => { ui.cell = +ev.target.value; kick(); });
+    document.getElementById('lens').addEventListener('input', (ev) => {
+      ui.lens = +ev.target.value;
+      if (target.lens) target.lens = ui.lens;
+      kick();
+    });
+
+    // Même cycle que l'easter egg du site : photo → coiffures 1 à 5 → photo.
+    let idx = 0, busy = false;
+    const cssImg = document.getElementById('css-img');
+    document.getElementById('swap').addEventListener('click', async () => {
+      if (busy || mixTarget) return;
+      busy = true;
+      idx = (idx + 1) % urls.length;
+      b = await textureAt(idx);
+      cssImg.src = urls[idx];
+      rebind();
+      mixT = 0; mixTarget = 1;
+      busy = false;
+      kick();
+    });
+
+    reduce.addEventListener('change', kick);
+  }
+
+  init().catch((err) => {
+    console.warn(err);
+    document.getElementById('notice').classList.add('on');
+  });
+</script>
+</body>
+</html>
